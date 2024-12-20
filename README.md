@@ -1,0 +1,1 @@
+# Snapp Domain Information Groper
