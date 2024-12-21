@@ -8,8 +8,8 @@ import (
 	"github.com/janstoon/toolbox/kareless/std"
 	"github.com/janstoon/toolbox/tricks"
 
-	"gitlab.snapp.ir/pouyanh/sdig/config"
-	"gitlab.snapp.ir/pouyanh/sdig/settings"
+	"gitlab.snapp.ir/pouyanh/lookhub/config"
+	"gitlab.snapp.ir/pouyanh/lookhub/settings"
 )
 
 func main() {

@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"gitlab.snapp.ir/pouyanh/sdig/dnslv"
+	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
 )
 
 func TestCreateDomain(t *testing.T) {
