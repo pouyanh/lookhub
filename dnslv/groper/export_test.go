@@ -1,3 +1,6 @@
 package groper
 
-type DomainRepository = domainRepository
+type (
+	DomainRepository  = domainRepository
+	DomainNameService = domainNameService
+)

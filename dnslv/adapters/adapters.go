@@ -11,6 +11,12 @@ var Adapters = []kareless.InstrumentInjector{
 					return newDomainRepo(ss, ib)
 				},
 			},
+			{
+				Names: []string{"svc/dnslv/dns"},
+				Builder: func(ss *kareless.Settings, ib *kareless.InstrumentBank) kareless.Instrument {
+					return newDNSClient(ss, ib)
+				},
+			},
 		}
 	},
 }
