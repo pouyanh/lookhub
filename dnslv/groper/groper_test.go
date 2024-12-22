@@ -42,17 +42,34 @@ func TestApplication_Lookup(t *testing.T) {
 	defer stop()
 
 	{
-		dns["pouyan.dev"] = []dnslv.ResourceRecord{
+		name := "pouyan.dev"
+		dns[name] = []dnslv.ResourceRecord{
 			{Type: "NS", Value: "ns1.example.com.", TTL: 21600},
 			{Type: "NS", Value: "ns2.example.com.", TTL: 21600},
 			{Type: "A", Value: "10.0.0.1", TTL: 14400},
 			{Type: "MX", Value: "0 pouyan.dev.", TTL: 14400},
 		}
 
-		assert.NotContains(t, domains, "pouyan.dev")
-		domain, err := app.Lookup(ctx, "pouyan.dev")
+		assert.NotContains(t, domains, name)
+		domain, err := app.Lookup(ctx, name)
 		require.NoError(t, err)
-		assert.Contains(t, domains, "pouyan.dev")
+		assert.Contains(t, domains, name)
+		assert.ElementsMatch(t,
+			domain.Records(),
+			[]dnslv.ResourceRecord{
+				{Type: "NS", Value: "ns1.example.com.", TTL: 21600},
+				{Type: "NS", Value: "ns2.example.com.", TTL: 21600},
+				{Type: "A", Value: "10.0.0.1", TTL: 14400},
+				{Type: "MX", Value: "0 pouyan.dev.", TTL: 14400},
+			},
+		)
+
+		// use cache
+		delete(dns, name)
+		assert.NotContains(t, dns, name)
+		domain, err = app.Lookup(ctx, name)
+		require.NoError(t, err)
+		assert.Contains(t, domains, name)
 		assert.ElementsMatch(t,
 			domain.Records(),
 			[]dnslv.ResourceRecord{
