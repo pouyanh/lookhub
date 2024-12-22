@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/janstoon/toolbox/bricks"
-	"github.com/janstoon/toolbox/kareless"
 	"github.com/janstoon/toolbox/tricks"
 
 	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
@@ -15,7 +14,7 @@ type repoDomain struct {
 	// todo: db connection
 }
 
-func newDomainRepo(ss *kareless.Settings, ib *kareless.InstrumentBank) repoDomain {
+func newDomainRepo() repoDomain {
 	return repoDomain{
 		// todo: db connection
 	}

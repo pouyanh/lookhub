@@ -13,5 +13,5 @@ type domainRepository interface {
 }
 
 type domainNameService interface {
-	QueryAllDNSRecords(ctx context.Context, name string) ([]dnslv.ResourceRecord, error)
+	QueryAllDNSRecords(ctx context.Context, domainName string) ([]dnslv.ResourceRecord, error)
 }

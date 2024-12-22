@@ -23,15 +23,15 @@ func NewApp(ss *kareless.Settings, ib *kareless.InstrumentBank) *Application {
 	}
 }
 
-func (app Application) Lookup(ctx context.Context, name string) (*dnslv.Domain, error) {
-	domain, err := app.domains.GetDomain(ctx, name, domainTtl)
+func (app Application) Lookup(ctx context.Context, domainName string) (*dnslv.Domain, error) {
+	domain, err := app.domains.GetDomain(ctx, domainName, domainTtl)
 	if err == nil {
 		// todo: increase cache hit metric
 	} else {
 		// todo: log the error and ignore
 		// todo: increase cache miss metric
 
-		domain, err = dnslv.DomainByName(dnslv.DomainName(name))
+		domain, err = dnslv.DomainByName(dnslv.DomainName(domainName))
 		if err != nil {
 			return nil, err
 		}
@@ -44,7 +44,7 @@ func (app Application) Lookup(ctx context.Context, name string) (*dnslv.Domain, 
 	ctxReq, cancel := context.WithTimeout(ctx, 30*time.Second)
 	defer cancel()
 
-	records, err := app.dns.QueryAllDNSRecords(ctxReq, name)
+	records, err := app.dns.QueryAllDNSRecords(ctxReq, domainName)
 	if err != nil {
 		return nil, err
 	}

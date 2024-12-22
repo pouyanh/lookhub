@@ -158,8 +158,8 @@ type domainNameService map[string][]dnslv.ResourceRecord
 
 var _ groper.DomainNameService = (*domainNameService)(nil)
 
-func (svc domainNameService) QueryAllDNSRecords(_ context.Context, name string) ([]dnslv.ResourceRecord, error) {
-	v, ok := svc[name]
+func (svc domainNameService) QueryAllDNSRecords(_ context.Context, domainName string) ([]dnslv.ResourceRecord, error) {
+	v, ok := svc[domainName]
 	if !ok {
 		return nil, bricks.ErrNotFound
 	}
