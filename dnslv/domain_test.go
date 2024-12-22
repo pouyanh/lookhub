@@ -72,8 +72,6 @@ func TestAddRecords(t *testing.T) {
 	err = d.AddRecords(record)
 	require.NoError(t, err)
 	assert.NotEmpty(t, d.Records())
-	assert.Contains(t, d.RecordsWithType("A"), record)
-	assert.NotContains(t, d.RecordsWithType("MX"), record)
 	assert.Contains(t, d.Records(), record)
 }
 

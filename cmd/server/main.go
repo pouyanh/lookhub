@@ -8,14 +8,18 @@ import (
 	"github.com/janstoon/toolbox/kareless/std"
 	"github.com/janstoon/toolbox/tricks"
 
+	"gitlab.snapp.ir/pouyanh/lookhub/adapters"
 	"gitlab.snapp.ir/pouyanh/lookhub/config"
+	"gitlab.snapp.ir/pouyanh/lookhub/drivers"
 	"gitlab.snapp.ir/pouyanh/lookhub/settings"
 )
 
 func main() {
-	k := kareless.Compile().
-		Feed(std.LocalEarlyLoadedSettingSource("conf", "/etc/sdig")).
+	k := kareless.Compile(config.BundlesEssentials()...).
+		Feed(std.LocalEarlyLoadedSettingSource("conf", "/etc/lookhub")).
 		Feed(settings.Default).
+		Equip(adapters.Adapters...).
+		Connect(drivers.Drivers...).
 		AfterStart(showWelcome)
 	if err := k.Run(context.Background()); err != nil {
 		panic(err)
@@ -23,7 +27,7 @@ func main() {
 }
 
 func showWelcome(
-	ctx context.Context, ss *kareless.Settings, ib *kareless.InstrumentBank, apps []kareless.Application,
+	_ context.Context, ss *kareless.Settings, _ *kareless.InstrumentBank, apps []kareless.Application,
 ) error {
 	fmt.Printf("Operation Mode: %s\n", settings.OperationMode(ss))
 	fmt.Printf("Active apps: %v\n", tricks.Map(apps, func(src kareless.Application) string {

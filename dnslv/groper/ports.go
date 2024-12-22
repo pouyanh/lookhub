@@ -2,10 +2,12 @@ package groper
 
 import (
 	"context"
+	"time"
 
 	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
 )
 
 type domainRepository interface {
-	GetDomain(ctx context.Context, name string) (*dnslv.Domain, error)
+	GetDomain(ctx context.Context, name string, ttl time.Duration) (*dnslv.Domain, error)
+	SaveDomain(ctx context.Context, domain *dnslv.Domain) error
 }

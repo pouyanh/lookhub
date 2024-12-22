@@ -54,18 +54,17 @@ func (d *Domain) Name() DomainName {
 	return d.name
 }
 
+// Records returns all resource records
 func (d *Domain) Records() []ResourceRecord {
 	return tricks.Copy(d.records)
 }
 
-// RecordsWithType returns Domain's DNS Records with ResourceRecord.Type matching t
-func (d *Domain) RecordsWithType(t ResourceRecordType) []ResourceRecord {
-	return tricks.Filter(d.records, func(src ResourceRecord) bool {
-		return src.Type == t
-	})
-}
-
+// DomainName is simply a domain name
 type DomainName string
+
+func (dn DomainName) String() string {
+	return string(dn)
+}
 
 func (dn DomainName) validate() error {
 	if len(strings.TrimSpace(string(dn))) == 0 {
@@ -111,6 +110,8 @@ func (r ResourceRecord) validate() error {
 	return nil
 }
 
+// ResourceRecordType is the DNS record type. For example A for address record or MX for Mail exchange record
+// For list of valid DNS record types visit: https://en.wikipedia.org/wiki/List_of_DNS_record_types
 type ResourceRecordType string
 
 func (t ResourceRecordType) validate() error {
