@@ -39,7 +39,7 @@ func Gateways(ss *kareless.Settings) []Gateway {
 	})
 }
 
-type Api struct {
+type API struct {
 	Name     string
 	Cors     Cors
 	Gateways []Gateway
@@ -49,10 +49,10 @@ type Cors struct {
 	OriginWhitelist []string
 }
 
-func ApiByName(ss *kareless.Settings, name string) Api {
+func APIByName(ss *kareless.Settings, name string) API {
 	prefix := strings.Join([]string{apis, name}, separator)
 
-	return Api{
+	return API{
 		Name: name,
 		Cors: Cors{
 			OriginWhitelist: ss.GetStringSlice(strings.Join([]string{prefix, apiCorsOrigin}, separator)),
@@ -64,9 +64,9 @@ func ApiByName(ss *kareless.Settings, name string) Api {
 	}
 }
 
-func Apis(ss *kareless.Settings) []Api {
-	return tricks.Map(ss.Children(apis), func(src string) Api {
-		return ApiByName(ss, src)
+func APIs(ss *kareless.Settings) []API {
+	return tricks.Map(ss.Children(apis), func(src string) API {
+		return APIByName(ss, src)
 	})
 }
 

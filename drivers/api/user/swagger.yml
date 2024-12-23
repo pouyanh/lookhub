@@ -1,0 +1,233 @@
+swagger: "2.0"
+info:
+  title: LookHub - User
+  description: User API
+  version: 0.0.1
+  contact:
+    name: Pouyan Heyratpour
+    url: https://pouyan.dev
+    email: me@pouyan.dev
+
+schemes:
+  - http
+
+# API Root path belonging to this module
+basePath: /
+
+consumes:
+  - application/json
+
+produces:
+  - application/json
+
+tags:
+  - name: maintenance
+    description: Monitoring, Health Checks, Ping-Pongs, ...
+  - name: dnslv
+    description: Domain name lookup & resolve
+
+paths:
+
+  # ------------------ #
+  #     Conventions    #
+  # ------------------ #
+
+  # Shared
+  #     204: No content
+  #     401: Unauthorized.
+  #     404: Resource not found.
+  #     500: Error is in our side.
+  #     503: Down for maintenance
+
+  # GET: Query
+  #   Responses:
+  #     200: Answer ready.
+
+  # POST: Command
+  #   Responses:
+  #     200: Task done.
+  #     201: Command validated, Task in progress...
+  #     202: Command accepted, Command validation in progress...
+  #     205: Client needs to refresh token for further requests
+  #     409: Rejected because of business error
+
+  # PUT: Full Update
+
+  # PATCH: Partial Update
+
+  # DELETE: Remove
+
+  # ------------------ #
+  #     Maintenance    #
+  # ------------------ #
+
+  /healthz:
+    get:
+      operationId: healthCheck
+      description: Health check; Give information about service health, source of build and uptime
+      tags:
+        - maintenance
+      security: [ ]
+      responses:
+        200:
+          description: Healthy
+          schema:
+            $ref: "#/definitions/ServiceHealth"
+
+        default:
+          $ref: "#/responses/Error"
+
+  # ------------------ #
+  #       DNSLV        #
+  # ------------------ #
+
+  /v1/dnslv/lookup:
+    post:
+      operationId: dnslvLookup
+      description: Lookup a domain name
+      tags:
+        - dnslv
+      parameters:
+        - $ref: "#/parameters/DnslvLookupCmd"
+      responses:
+        200:
+          description: Success
+          schema:
+            $ref: "#/definitions/DnslvLookupRsp"
+
+        default:
+          $ref: "#/responses/Error"
+
+definitions:
+
+  # ------------------ #
+  #       Error        #
+  # ------------------ #
+
+  Error:
+    type: object
+    description: Details of a failure happened during a request
+    properties:
+      code:
+        type: string
+        description: Situation code
+      message:
+        type: string
+        description: Descriptive error text
+      traceId:
+        type: string
+        description: Request trace id
+
+  # ------------------ #
+  #     Maintenance    #
+  # ------------------ #
+
+  ServiceStatus:
+    type: string
+    description: Service status
+    example: Ready
+    enum: &ServiceStatuses
+      - Booting
+      - Ready
+      - ShuttingDown
+
+  ServiceHealth:
+    type: object
+    description: Service health report
+    properties:
+      status:
+        $ref: "#/definitions/ServiceStatus"
+      commit:
+        type: string
+        description: git commit hash of the HEAD in the executable application's source code in compile-time
+      version:
+        type: string
+        description: latest git tag or a pseudo-version indicating git tag and commit fingerprint in the executable application's source code in compile-time
+      buildDate:
+        type: string
+        description: reveals date when the executable application was build
+      uptime:
+        type: string
+        description: Time since service was started
+
+  # ------------------ #
+  #       DNSLV        #
+  # ------------------ #
+
+  DnslvLookupCmd:
+    type: object
+    description: Lookup command
+    required:
+      - domain
+    properties:
+      domain:
+        type: string
+        description: Domain name to lookup
+
+  DnslvLookupRsp:
+    type: object
+    description: Lookup response
+    required:
+      - domain
+    properties:
+      domain:
+        $ref: "#/definitions/Domain"
+
+  Domain:
+    type: object
+    description: Domain information
+    required:
+      - name
+      - resourceRecords
+    properties:
+      name:
+        type: string
+        description: Domain name
+      resourceRecords:
+        type: array
+        description: Collection of resource records
+        items:
+          $ref: "#/definitions/ResourceRecord"
+
+  ResourceRecord:
+    type: object
+    description: Resource record summary
+    required:
+      - type
+      - value
+      - ttl
+    properties:
+      type:
+        type: string
+      value:
+        type: string
+      ttl:
+        type: integer
+        description: ttl in seconds
+
+responses:
+
+  # ------------------ #
+  #       Error        #
+  # ------------------ #
+
+  Error:
+    description: Error
+    headers:
+      Content-Language:
+        type: string
+        description: Response locale
+    schema:
+      $ref: "#/definitions/Error"
+
+parameters:
+
+  # ------------------ #
+  #       DNSLV        #
+  # ------------------ #
+
+  DnslvLookupCmd:
+    in: body
+    name: lookup
+    schema:
+      $ref: "#/definitions/DnslvLookupCmd"
