@@ -16,24 +16,6 @@ type AddResourceRecordParams struct {
 	Ttl      int32  `json:"ttl"`
 }
 
-const createDomain = `-- name: CreateDomain :one
-INSERT INTO domains (name)
-VALUES ($1)
-RETURNING id, name, created_at, updated_at
-`
-
-func (q *Queries) CreateDomain(ctx context.Context, name string) (Domain, error) {
-	row := q.db.QueryRow(ctx, createDomain, name)
-	var i Domain
-	err := row.Scan(
-		&i.ID,
-		&i.Name,
-		&i.CreatedAt,
-		&i.UpdatedAt,
-	)
-	return i, err
-}
-
 const domainExists = `-- name: DomainExists :one
 SELECT id
 FROM domains
@@ -95,4 +77,25 @@ func (q *Queries) GetUnexpiredDomain(ctx context.Context, ttl int32) ([]GetUnexp
 		return nil, err
 	}
 	return items, nil
+}
+
+const upsertDomain = `-- name: UpsertDomain :one
+INSERT INTO domains (name, updated_at)
+VALUES ($1, NOW())
+ON CONFLICT (name)
+	DO UPDATE
+	SET updated_at = NOW()
+RETURNING id, name, created_at, updated_at
+`
+
+func (q *Queries) UpsertDomain(ctx context.Context, name string) (Domain, error) {
+	row := q.db.QueryRow(ctx, upsertDomain, name)
+	var i Domain
+	err := row.Scan(
+		&i.ID,
+		&i.Name,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+	)
+	return i, err
 }

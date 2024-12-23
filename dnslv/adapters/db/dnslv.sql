@@ -16,9 +16,12 @@ SELECT id
 FROM domains
 WHERE name = @name;
 
--- name: CreateDomain :one
-INSERT INTO domains (name)
-VALUES (@name)
+-- name: UpsertDomain :one
+INSERT INTO domains (name, updated_at)
+VALUES (@name, NOW())
+ON CONFLICT (name)
+	DO UPDATE
+	SET updated_at = NOW()
 RETURNING *;
 
 -- name: AddResourceRecord :copyfrom
