@@ -3,6 +3,7 @@ package db
 import (
 	"fmt"
 
+	"github.com/janstoon/toolbox/bricks"
 	"github.com/janstoon/toolbox/kareless"
 	"github.com/janstoon/toolbox/tricks"
 
@@ -22,7 +23,7 @@ var Databases = []kareless.InstrumentInjector{
 					Builder: func(ss *kareless.Settings, ib *kareless.InstrumentBank) kareless.Instrument {
 						ib.Resolve(lookhub.ExternalServicesReady, func(v any) bool { return true })
 
-						return newDatabaseConnection(settings.DatabaseByName(ss, db.Name), settings.OperationMode(ss))
+						return dbConnAdapter(settings.DatabaseByName(ss, db.Name), settings.OperationMode(ss))
 					},
 				}
 			},
@@ -30,6 +31,20 @@ var Databases = []kareless.InstrumentInjector{
 	},
 }
 
-func newDatabaseConnection(ss settings.Database, mode settings.Mode) any {
-	return "TODO"
+func dbConnAdapter(db settings.Database, mode settings.Mode) any {
+	conn, err := newDBConnection(db, mode)
+	if err != nil {
+		panic(err)
+	}
+
+	return conn
+}
+
+func newDBConnection(db settings.Database, mode settings.Mode) (any, error) {
+	switch db.Adapter {
+	case "postgresql", "postgres", "pg":
+		return newPgxConnectionPool(db, mode)
+	}
+
+	return nil, bricks.ErrUnimplemented
 }

@@ -8,8 +8,8 @@ import (
 )
 
 type domainRepository interface {
-	GetDomain(ctx context.Context, name string, ttl time.Duration) (*dnslv.Domain, error)
-	SaveDomain(ctx context.Context, domain *dnslv.Domain) error
+	GetUnexpiredDomain(ctx context.Context, name string, ttl time.Duration) (*dnslv.Domain, error)
+	SyncDomain(ctx context.Context, domain *dnslv.Domain) error
 }
 
 type domainNameService interface {

@@ -24,7 +24,7 @@ func NewApp(ss *kareless.Settings, ib *kareless.InstrumentBank) *Application {
 }
 
 func (app Application) Lookup(ctx context.Context, domainName string) (*dnslv.Domain, error) {
-	domain, err := app.domains.GetDomain(ctx, domainName, domainTtl)
+	domain, err := app.domains.GetUnexpiredDomain(ctx, domainName, domainTtl)
 	if err == nil {
 		// todo: increase cache hit metric
 	} else {
@@ -54,7 +54,7 @@ func (app Application) Lookup(ctx context.Context, domainName string) (*dnslv.Do
 		return nil, err
 	}
 
-	err = app.domains.SaveDomain(ctx, domain)
+	err = app.domains.SyncDomain(ctx, domain)
 	if err != nil {
 		// todo: log the error and ignore
 	}

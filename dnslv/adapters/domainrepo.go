@@ -4,28 +4,29 @@ import (
 	"context"
 	"time"
 
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/janstoon/toolbox/bricks"
 	"github.com/janstoon/toolbox/tricks"
 
 	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
 )
 
-type repoDomain struct {
-	// todo: db connection
+type domainRepo struct {
+	conn *pgxpool.Pool
 }
 
-func newDomainRepo() repoDomain {
-	return repoDomain{
-		// todo: db connection
+func newDomainRepo(conn *pgxpool.Pool) domainRepo {
+	return domainRepo{
+		conn: conn,
 	}
 }
 
-func (repo repoDomain) GetDomain(ctx context.Context, name string, ttl time.Duration) (*dnslv.Domain, error) {
+func (repo domainRepo) GetUnexpiredDomain(ctx context.Context, name string, ttl time.Duration) (*dnslv.Domain, error) {
 	var dst dnslv.Domain
 
 	return tricks.ValPtr(dst), bricks.ErrUnimplemented
 }
 
-func (repo repoDomain) SaveDomain(ctx context.Context, domain dnslv.Domain) error {
+func (repo domainRepo) SyncDomain(ctx context.Context, domain *dnslv.Domain) error {
 	return bricks.ErrUnimplemented
 }

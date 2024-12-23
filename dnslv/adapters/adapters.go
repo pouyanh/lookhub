@@ -1,6 +1,7 @@
 package adapters
 
 import (
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/janstoon/toolbox/kareless"
 
 	"gitlab.snapp.ir/pouyanh/lookhub/settings"
@@ -25,8 +26,10 @@ var Adapters = []kareless.InstrumentInjector{
 	},
 }
 
-func domainRepoAdapter(ss *kareless.Settings, ib *kareless.InstrumentBank) repoDomain {
-	return newDomainRepo()
+func domainRepoAdapter(ss *kareless.Settings, ib *kareless.InstrumentBank) domainRepo {
+	return newDomainRepo(
+		kareless.ResolveInstrumentByType[*pgxpool.Pool](ib, "db/dnslv"),
+	)
 }
 
 func dnsClientAdapter(ss *kareless.Settings) dnsClient {

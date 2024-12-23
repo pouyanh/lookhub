@@ -18,8 +18,8 @@ func TestApplication_Lookup(t *testing.T) {
 	var (
 		app *groper.Application
 
-		domains domainRepo
-		dns     domainNameService
+		domains testDomainRepo
+		dns     testDomainNameService
 	)
 
 	k := kareless.Compile().
@@ -33,8 +33,8 @@ func TestApplication_Lookup(t *testing.T) {
 	ctx, stop := run(
 		context.Background(), k,
 		func(ctx context.Context, ss *kareless.Settings, ib *kareless.InstrumentBank, apps []kareless.Application) error {
-			domains = kareless.ResolveInstrumentByType[domainRepo](ib, "repo/dnslv/domain")
-			dns = kareless.ResolveInstrumentByType[domainNameService](ib, "svc/dnslv/dns")
+			domains = kareless.ResolveInstrumentByType[testDomainRepo](ib, "repo/dnslv/domain")
+			dns = kareless.ResolveInstrumentByType[testDomainNameService](ib, "svc/dnslv/dns")
 
 			return nil
 		},
@@ -114,38 +114,38 @@ var adapters = []kareless.InstrumentInjector{
 			{
 				Names: []string{"repo/dnslv/domain"},
 				Builder: func(ss *kareless.Settings, ib *kareless.InstrumentBank) kareless.Instrument {
-					return make(domainRepo)
+					return make(testDomainRepo)
 				},
 			},
 			{
 				Names: []string{"svc/dnslv/dns"},
 				Builder: func(ss *kareless.Settings, ib *kareless.InstrumentBank) kareless.Instrument {
-					return make(domainNameService)
+					return make(testDomainNameService)
 				},
 			},
 		}
 	},
 }
 
-type domainRepo map[string]domainDao
+type testDomainRepo map[string]domainDao
 
 type domainDao struct {
 	domain    *dnslv.Domain
 	updatedAt time.Time
 }
 
-var _ groper.DomainRepository = (*domainRepo)(nil)
+var _ groper.DomainRepository = (*testDomainRepo)(nil)
 
-func (dd domainRepo) GetDomain(_ context.Context, name string, ttl time.Duration) (*dnslv.Domain, error) {
+func (dd testDomainRepo) GetUnexpiredDomain(_ context.Context, name string, ttl time.Duration) (*dnslv.Domain, error) {
 	v, ok := dd[name]
-	if !ok || time.Now().After(v.updatedAt.Add(ttl)) {
+	if !ok || time.Now().Add(-ttl).After(v.updatedAt) {
 		return nil, bricks.ErrNotFound
 	}
 
 	return v.domain, nil
 }
 
-func (dd domainRepo) SaveDomain(_ context.Context, domain *dnslv.Domain) error {
+func (dd testDomainRepo) SyncDomain(_ context.Context, domain *dnslv.Domain) error {
 	dd[domain.Name().String()] = domainDao{
 		domain:    domain,
 		updatedAt: time.Now(),
@@ -154,11 +154,13 @@ func (dd domainRepo) SaveDomain(_ context.Context, domain *dnslv.Domain) error {
 	return nil
 }
 
-type domainNameService map[string][]dnslv.ResourceRecord
+type testDomainNameService map[string][]dnslv.ResourceRecord
 
-var _ groper.DomainNameService = (*domainNameService)(nil)
+var _ groper.DomainNameService = (*testDomainNameService)(nil)
 
-func (svc domainNameService) QueryAllDNSRecords(_ context.Context, domainName string) ([]dnslv.ResourceRecord, error) {
+func (svc testDomainNameService) QueryAllDNSRecords(
+	_ context.Context, domainName string,
+) ([]dnslv.ResourceRecord, error) {
 	v, ok := svc[domainName]
 	if !ok {
 		return nil, bricks.ErrNotFound

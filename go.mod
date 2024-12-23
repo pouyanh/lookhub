@@ -3,11 +3,13 @@ module gitlab.snapp.ir/pouyanh/lookhub
 go 1.23.4
 
 require (
+	github.com/jackc/pgx/v5 v5.7.2
 	github.com/janstoon/toolbox/bricks v0.8.1
 	github.com/janstoon/toolbox/kareless v0.13.0
 	github.com/janstoon/toolbox/tricks v0.11.0
 	github.com/miekg/dns v1.1.62
 	github.com/orlangure/gnomock v0.31.0
+	github.com/sqlc-dev/sqlc v1.27.0
 	github.com/stretchr/testify v1.9.0
 	golang.org/x/sync v0.10.0
 )
@@ -31,6 +33,9 @@ require (
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/grpc-ecosystem/grpc-gateway/v2 v2.22.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/jackc/pgpassfile v1.0.0 // indirect
+	github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 // indirect
+	github.com/jackc/puddle/v2 v2.2.2 // indirect
 	github.com/lib/pq v1.10.9 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
@@ -66,6 +71,7 @@ require (
 	go.opentelemetry.io/proto/otlp v1.3.1 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	go.uber.org/zap v1.27.0 // indirect
+	golang.org/x/crypto v0.31.0 // indirect
 	golang.org/x/exp v0.0.0-20240909161429-701f63a606c0 // indirect
 	golang.org/x/mod v0.21.0 // indirect
 	golang.org/x/net v0.33.0 // indirect
