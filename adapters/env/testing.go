@@ -13,7 +13,7 @@ import (
 	"gitlab.snapp.ir/pouyanh/lookhub/settings"
 )
 
-func testing(_ *kareless.Settings) []kareless.InstrumentCatalogue {
+func testing() []kareless.InstrumentCatalogue {
 	return []kareless.InstrumentCatalogue{
 		{
 			Names: []string{lookhub.ExternalServicesReady},

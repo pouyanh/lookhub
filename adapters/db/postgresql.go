@@ -11,13 +11,13 @@ import (
 	"gitlab.snapp.ir/pouyanh/lookhub/settings"
 )
 
-func newPgxConnectionPool(db settings.Database, mode settings.Mode) (*pgxpool.Pool, error) {
+func newPgxConnectionPool(dbSs settings.Database, _ settings.Mode) (*pgxpool.Pool, error) {
 	dsn := fmt.Sprintf(
 		"postgres://%s:%s@%s/%s",
-		db.Username,
-		db.Password,
-		net.JoinHostPort(db.Host, strconv.Itoa(db.Port)),
-		db.DbName,
+		dbSs.Username,
+		dbSs.Password,
+		net.JoinHostPort(dbSs.Host, strconv.Itoa(dbSs.Port)),
+		dbSs.DbName,
 	)
 
 	return pgxpool.New(context.Background(), dsn)

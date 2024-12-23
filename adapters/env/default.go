@@ -6,11 +6,11 @@ import (
 	"gitlab.snapp.ir/pouyanh/lookhub"
 )
 
-func privileged(ss *kareless.Settings) []kareless.InstrumentCatalogue {
-	return isolated(ss)
+func privileged() []kareless.InstrumentCatalogue {
+	return isolated()
 }
 
-func isolated(_ *kareless.Settings) []kareless.InstrumentCatalogue {
+func isolated() []kareless.InstrumentCatalogue {
 	return []kareless.InstrumentCatalogue{
 		{
 			Names: []string{lookhub.ExternalServicesReady},

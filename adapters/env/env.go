@@ -10,12 +10,12 @@ var Environment = []kareless.InstrumentInjector{
 	func(ss *kareless.Settings) []kareless.InstrumentCatalogue {
 		switch settings.OperationMode(ss) {
 		case settings.Testing:
-			return testing(ss)
+			return testing()
 
 		case settings.Privileged:
-			return privileged(ss)
+			return privileged()
 		}
 
-		return isolated(ss)
+		return isolated()
 	},
 }

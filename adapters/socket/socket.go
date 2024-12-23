@@ -14,21 +14,21 @@ import (
 
 var Socket = []kareless.InstrumentInjector{
 	func(ss *kareless.Settings) []kareless.InstrumentCatalogue {
-		return tricks.Map(settings.Gateways(ss), func(gw settings.Gateway) kareless.InstrumentCatalogue {
+		return tricks.Map(settings.Gateways(ss), func(gwSs settings.Gateway) kareless.InstrumentCatalogue {
 			return kareless.InstrumentCatalogue{
 				Names: []string{
-					fmt.Sprintf("socket/%s", gw.Name),
+					fmt.Sprintf("socket/%s", gwSs.Name),
 				},
 				Builder: func(ss *kareless.Settings, ib *kareless.InstrumentBank) kareless.Instrument {
-					return newSocket(gw)
+					return newSocket(gwSs)
 				},
 			}
 		})
 	},
 }
 
-func newSocket(gw settings.Gateway) net.Listener {
-	l, err := net.Listen(gw.Proto, gw.Address)
+func newSocket(gwSs settings.Gateway) net.Listener {
+	l, err := net.Listen(gwSs.Proto, gwSs.Address)
 	if err != nil {
 		panic(errors.Join(bricks.ErrUnavailable, err))
 	}

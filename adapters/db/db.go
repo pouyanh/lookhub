@@ -15,15 +15,15 @@ var Databases = []kareless.InstrumentInjector{
 	func(ss *kareless.Settings) []kareless.InstrumentCatalogue {
 		return tricks.Map(
 			settings.Databases(ss),
-			func(db settings.Database) kareless.InstrumentCatalogue {
+			func(dbSs settings.Database) kareless.InstrumentCatalogue {
 				return kareless.InstrumentCatalogue{
 					Names: []string{
-						fmt.Sprintf("db/%s", db.Name),
+						fmt.Sprintf("db/%s", dbSs.Name),
 					},
 					Builder: func(ss *kareless.Settings, ib *kareless.InstrumentBank) kareless.Instrument {
 						ib.Resolve(lookhub.ExternalServicesReady, func(v any) bool { return true })
 
-						return dbConnAdapter(settings.DatabaseByName(ss, db.Name), settings.OperationMode(ss))
+						return dbConnAdapter(settings.DatabaseByName(ss, dbSs.Name), settings.OperationMode(ss))
 					},
 				}
 			},
@@ -31,8 +31,8 @@ var Databases = []kareless.InstrumentInjector{
 	},
 }
 
-func dbConnAdapter(db settings.Database, mode settings.Mode) any {
-	conn, err := newDBConnection(db, mode)
+func dbConnAdapter(dbSs settings.Database, modeSs settings.Mode) any {
+	conn, err := newDBConnection(dbSs, modeSs)
 	if err != nil {
 		panic(err)
 	}
@@ -40,10 +40,10 @@ func dbConnAdapter(db settings.Database, mode settings.Mode) any {
 	return conn
 }
 
-func newDBConnection(db settings.Database, mode settings.Mode) (any, error) {
-	switch db.Adapter {
+func newDBConnection(dbSs settings.Database, modeSs settings.Mode) (any, error) {
+	switch dbSs.Adapter {
 	case "postgresql", "postgres", "pg":
-		return newPgxConnectionPool(db, mode)
+		return newPgxConnectionPool(dbSs, modeSs)
 	}
 
 	return nil, bricks.ErrUnimplemented
