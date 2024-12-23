@@ -16,6 +16,30 @@ type AddResourceRecordParams struct {
 	Ttl      int32  `json:"ttl"`
 }
 
+const deleteDomainResourceRecordsByDomainID = `-- name: DeleteDomainResourceRecordsByDomainID :exec
+DELETE
+FROM resource_records
+WHERE domain_id = $1
+`
+
+func (q *Queries) DeleteDomainResourceRecordsByDomainID(ctx context.Context, domainID *int32) error {
+	_, err := q.db.Exec(ctx, deleteDomainResourceRecordsByDomainID, domainID)
+	return err
+}
+
+const deleteDomainResourceRecordsByDomainName = `-- name: DeleteDomainResourceRecordsByDomainName :exec
+DELETE
+FROM resource_records
+WHERE domain_id = (SELECT id
+									 FROM domains
+									 WHERE name = $1)
+`
+
+func (q *Queries) DeleteDomainResourceRecordsByDomainName(ctx context.Context, name string) error {
+	_, err := q.db.Exec(ctx, deleteDomainResourceRecordsByDomainName, name)
+	return err
+}
+
 const domainExists = `-- name: DomainExists :one
 SELECT id
 FROM domains
@@ -39,8 +63,14 @@ SELECT d.id     AS domain_id,
 			 rr.ttl   AS resource_record_ttl
 FROM domains d
 			 LEFT JOIN resource_records rr ON d.id = rr.domain_id
-WHERE NOW() - (INTERVAL '1 second' * $1::INT) <= d.updated_at
+WHERE d.name = $1
+	AND NOW() - (INTERVAL '1 second' * $2::INT) <= d.updated_at
 `
+
+type GetUnexpiredDomainParams struct {
+	Name string `json:"name"`
+	Ttl  int32  `json:"ttl"`
+}
 
 type GetUnexpiredDomainRow struct {
 	DomainID            int32   `json:"domainId"`
@@ -52,8 +82,8 @@ type GetUnexpiredDomainRow struct {
 }
 
 // DOMAIN AGGREGATE
-func (q *Queries) GetUnexpiredDomain(ctx context.Context, ttl int32) ([]GetUnexpiredDomainRow, error) {
-	rows, err := q.db.Query(ctx, getUnexpiredDomain, ttl)
+func (q *Queries) GetUnexpiredDomain(ctx context.Context, arg GetUnexpiredDomainParams) ([]GetUnexpiredDomainRow, error) {
+	rows, err := q.db.Query(ctx, getUnexpiredDomain, arg.Name, arg.Ttl)
 	if err != nil {
 		return nil, err
 	}

@@ -9,7 +9,8 @@ SELECT d.id     AS domain_id,
 			 rr.ttl   AS resource_record_ttl
 FROM domains d
 			 LEFT JOIN resource_records rr ON d.id = rr.domain_id
-WHERE NOW() - (INTERVAL '1 second' * @ttl::INT) <= d.updated_at;
+WHERE d.name = @name
+	AND NOW() - (INTERVAL '1 second' * @ttl::INT) <= d.updated_at;
 
 -- name: DomainExists :one
 SELECT id
@@ -27,3 +28,15 @@ RETURNING *;
 -- name: AddResourceRecord :copyfrom
 INSERT INTO resource_records (domain_id, type, value, ttl)
 VALUES (@domain_id, @type, @value, @ttl);
+
+-- name: DeleteDomainResourceRecordsByDomainID :exec
+DELETE
+FROM resource_records
+WHERE domain_id = @domain_id;
+
+-- name: DeleteDomainResourceRecordsByDomainName :exec
+DELETE
+FROM resource_records
+WHERE domain_id = (SELECT id
+									 FROM domains
+									 WHERE name = @name);
