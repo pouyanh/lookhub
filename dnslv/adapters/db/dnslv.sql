@@ -21,7 +21,6 @@ INSERT INTO domains (name)
 VALUES (@name)
 RETURNING *;
 
--- name: AddResourceRecord :batchmany
+-- name: AddResourceRecord :copyfrom
 INSERT INTO resource_records (domain_id, type, value, ttl)
-VALUES (@domain_id, @type, @value, @ttl)
-RETURNING *;
+VALUES (@domain_id, @type, @value, @ttl);
