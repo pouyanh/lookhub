@@ -12,6 +12,7 @@ import (
 
 	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
 	"gitlab.snapp.ir/pouyanh/lookhub/dnslv/groper"
+	"gitlab.snapp.ir/pouyanh/lookhub/settings"
 )
 
 func TestApplication_Lookup(t *testing.T) {
@@ -23,6 +24,7 @@ func TestApplication_Lookup(t *testing.T) {
 	)
 
 	k := kareless.Compile().
+		Feed(settings.Default).
 		Equip(adapters...).
 		Install(func(ss *kareless.Settings, ib *kareless.InstrumentBank) kareless.Application {
 			app = groper.NewApp(ss, ib)
