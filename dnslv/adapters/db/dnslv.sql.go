@@ -10,7 +10,7 @@ import (
 )
 
 type AddResourceRecordParams struct {
-	DomainID *int32 `json:"domainId"`
+	DomainID int32  `json:"domainId"`
 	Type     string `json:"type"`
 	Value    string `json:"value"`
 	Ttl      int32  `json:"ttl"`
@@ -22,7 +22,7 @@ FROM resource_records
 WHERE domain_id = $1
 `
 
-func (q *Queries) DeleteDomainResourceRecordsByDomainID(ctx context.Context, domainID *int32) error {
+func (q *Queries) DeleteDomainResourceRecordsByDomainID(ctx context.Context, domainID int32) error {
 	_, err := q.db.Exec(ctx, deleteDomainResourceRecordsByDomainID, domainID)
 	return err
 }

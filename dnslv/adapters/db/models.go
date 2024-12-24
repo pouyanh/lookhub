@@ -16,8 +16,8 @@ type Domain struct {
 }
 
 type ResourceRecord struct {
+	DomainID  int32            `json:"domainId"`
 	ID        int32            `json:"id"`
-	DomainID  *int32           `json:"domainId"`
 	Type      string           `json:"type"`
 	Value     string           `json:"value"`
 	Ttl       int32            `json:"ttl"`

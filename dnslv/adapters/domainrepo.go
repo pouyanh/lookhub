@@ -66,7 +66,7 @@ func (repo domainRepo) SyncDomain(ctx context.Context, domain *dnslv.Domain) err
 		return err
 	}
 
-	err = qtx.DeleteDomainResourceRecordsByDomainID(ctx, tricks.ValPtr(daoDomain.ID))
+	err = qtx.DeleteDomainResourceRecordsByDomainID(ctx, daoDomain.ID)
 	if err != nil {
 		return err
 	}
@@ -74,7 +74,7 @@ func (repo domainRepo) SyncDomain(ctx context.Context, domain *dnslv.Domain) err
 	count, err := qtx.AddResourceRecord(ctx,
 		tricks.Map(domain.Records(), func(src dnslv.ResourceRecord) db.AddResourceRecordParams {
 			return db.AddResourceRecordParams{
-				DomainID: tricks.ValPtr(daoDomain.ID),
+				DomainID: daoDomain.ID,
 				Type:     string(src.Type),
 				Value:    src.Value,
 				Ttl:      int32(src.TTL),
