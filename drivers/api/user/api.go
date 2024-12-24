@@ -118,7 +118,7 @@ func (s server) attachHandlers(api *operations.LookHubUserAPI) {
 	api.MaintenanceHealthCheckHandler = maintenance.HealthCheckHandlerFunc(s.handleHealthCheck)
 
 	// DNSLV
-	api.DnslvDnslvLookupHandler = dnslv.DnslvLookupHandlerFunc(s.handleDnslvLookup)
+	api.DnslvDnslvLookupHandler = dnslv.DnslvLookupHandlerFunc(s.handleDNSLVLookup)
 }
 
 func (server) noTraceOperationIds(mctx *middleware.Context) []string {
