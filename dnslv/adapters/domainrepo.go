@@ -73,7 +73,12 @@ func (repo domainRepo) SyncDomain(ctx context.Context, domain *dnslv.Domain) err
 
 	count, err := qtx.AddResourceRecord(ctx,
 		tricks.Map(domain.Records(), func(src dnslv.ResourceRecord) db.AddResourceRecordParams {
-			return db.AddResourceRecordParams{}
+			return db.AddResourceRecordParams{
+				DomainID: tricks.ValPtr(daoDomain.ID),
+				Type:     string(src.Type),
+				Value:    src.Value,
+				Ttl:      int32(src.TTL),
+			}
 		}),
 	)
 	if err != nil {
