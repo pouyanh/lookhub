@@ -7,24 +7,27 @@ import (
 	"github.com/janstoon/toolbox/kareless"
 
 	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
+	"gitlab.snapp.ir/pouyanh/lookhub/settings"
 )
-
-const domainTtl = 5 * time.Minute
 
 type Application struct {
 	domains domainRepository
 	dns     domainNameService
+
+	cacheTTL time.Duration
 }
 
 func NewApp(ss *kareless.Settings, ib *kareless.InstrumentBank) *Application {
 	return &Application{
 		domains: kareless.ResolveInstrumentByType[domainRepository](ib, "repo/dnslv/domain"),
 		dns:     kareless.ResolveInstrumentByType[domainNameService](ib, "svc/dnslv/dns"),
+
+		cacheTTL: settings.LookupTTL(ss),
 	}
 }
 
 func (app Application) Lookup(ctx context.Context, domainName string) (*dnslv.Domain, error) {
-	domain, err := app.domains.GetUnexpiredDomain(ctx, domainName, domainTtl)
+	domain, err := app.domains.GetUnexpiredDomain(ctx, domainName, app.cacheTTL)
 	if err == nil {
 		// todo: increase cache hit metric
 	} else {
