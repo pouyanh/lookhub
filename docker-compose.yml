@@ -1,0 +1,86 @@
+version: "3"
+services:
+  lookhub:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+      args:
+        ACCESS_TOKEN: YOUR_ACCESS_TOKEN
+    image: registry.ronaksoft.com/library/golang:1.23
+    working_dir: /app
+    volumes:
+      - .:/app
+      - ./.development/configs/lookhub:/etc/lookhub
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      pg:
+        condition: service_healthy
+    restart: on-failure
+    healthcheck:
+      test:
+        - "CMD"
+        - "curl"
+        - "-f"
+        - "-k"
+        - "https://localhost/healthz"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      default:
+        aliases:
+          - lookhub.${DOMAIN}
+    environment:
+      HOSTNAME: lookhub.${DOMAIN}
+
+  pg:
+    image: postgres:16
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ./.development/persist/postgresql:/var/lib/postgresql/data
+    restart: on-failure
+    healthcheck:
+      test:
+        - "CMD-SHELL"
+        - "pg_isready -U postgres -p 5432"
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      default:
+        aliases:
+          - pg.${DOMAIN}
+    environment:
+      HOSTNAME: pg.${DOMAIN}
+
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: lookhub
+
+  pg-admin:
+    image: adminer:latest
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+    depends_on:
+      - pg
+    restart: on-failure
+    healthcheck:
+      test:
+        - "CMD"
+        - "wget"
+        - "--no-verbose"
+        - "--tries=1"
+        - "--spider"
+        - "http://localhost:8080"
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      default:
+        aliases:
+          - pgadmin.${DOMAIN}
+    environment:
+      HOSTNAME: pgadmin.${DOMAIN}
+
+      ADMINER_DEFAULT_SERVER: pg.${DOMAIN}
+      ADMINER_DESIGN: nette

@@ -1,0 +1,6 @@
+version: "3"
+services:
+  lookhub:
+    build:
+      args:
+        ACCESS_TOKEN: YOUR_ACCESS_TOKEN

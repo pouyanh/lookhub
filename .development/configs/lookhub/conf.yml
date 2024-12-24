@@ -1,0 +1,21 @@
+mode: privileged
+
+gateways:
+  user:
+    address: 0.0.0.0:80
+    proto: tcp
+
+apis:
+  user:
+    cors.origin: localhost *
+    gateways:
+      - user
+
+databases:
+  dnslv:
+    adapter: postgresql
+    host: pg.cloud.snp
+    port: 5432
+    name: lookhub
+    username: postgres
+    password: postgres
