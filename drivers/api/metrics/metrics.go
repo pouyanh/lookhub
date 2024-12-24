@@ -1,5 +1,24 @@
 package metrics
 
-import "github.com/janstoon/toolbox/kareless"
+import (
+	"fmt"
+	"net"
 
-var API kareless.DriverConstructor
+	"github.com/janstoon/toolbox/kareless"
+	"github.com/janstoon/toolbox/tricks"
+
+	"gitlab.snapp.ir/pouyanh/lookhub/settings"
+)
+
+var API kareless.DriverConstructor = apiDriver
+
+func apiDriver(ss *kareless.Settings, ib *kareless.InstrumentBank, apps []kareless.Application) kareless.Driver {
+	apiSs := settings.APIByName(ss, "metric")
+
+	return newServer(
+		apiSs,
+		tricks.Map(apiSs.Gateways, func(gwSs settings.Gateway) net.Listener {
+			return kareless.ResolveInstrumentByType[net.Listener](ib, fmt.Sprintf("socket/%s", gwSs.Name))
+		}),
+	)
+}
