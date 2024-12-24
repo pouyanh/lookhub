@@ -21,5 +21,5 @@ func LookupTTL(ss *kareless.Settings) time.Duration {
 
 func init() {
 	Default[lookupServer] = "8.8.8.8"
-	Default[lookupServer] = "5m"
+	Default[lookupTTL] = "5m"
 }
