@@ -6,11 +6,11 @@ output "endpoint" {
 	value = kind_cluster.default.endpoint
 }
 
-output "ci_user" {
-	value = kubernetes_service_account.ci.metadata[0].name
+output "lookhub_ci_user" {
+	value = kubernetes_service_account.lookhub_ci.metadata[0].name
 }
 
-output "ci_token" {
+output "lookhub_ci_token" {
 	sensitive = true
-	value = lookup(kubernetes_secret.ci_token.data, "token")
+	value = lookup(kubernetes_secret.lookhub_ci_token.data, "token")
 }

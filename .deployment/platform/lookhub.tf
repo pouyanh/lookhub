@@ -1,55 +1,3 @@
-resource "kind_cluster" "default" {
-	name            = var.cluster_name
-	kubeconfig_path = "${path.module}/kubeconfig.yaml"
-
-	kind_config {
-		api_version = "kind.x-k8s.io/v1alpha4"
-		kind        = "Cluster"
-
-		node {
-			role = "control-plane"
-		}
-
-		node {
-			role = "worker"
-		}
-
-		node {
-			role = "worker"
-		}
-	}
-}
-
-resource "kubernetes_cluster_role" "admin" {
-	metadata {
-		name = "cluster-admin-role"
-	}
-
-	rule {
-		api_groups = [""]
-		resources  = ["*"]
-		verbs      = ["*"]
-	}
-}
-
-resource "kubernetes_cluster_role_binding" "admin" {
-	metadata {
-		name = "cluster-admin-role-binding"
-	}
-
-	role_ref {
-		api_group = "rbac.authorization.k8s.io"
-		kind      = "ClusterRole"
-		name      = kubernetes_cluster_role.admin.metadata[0].name
-	}
-
-	subject {
-		kind      = "User"
-		name      = "cpe"
-		api_group = ""
-	}
-}
-
 resource "kubernetes_namespace" "lookhub" {
 	metadata {
 		name = "lookhub"
@@ -125,21 +73,21 @@ resource "kubernetes_role" "lookhub_pods_reader" {
 	}
 }
 
-resource "kubernetes_service_account" "ci" {
+resource "kubernetes_service_account" "lookhub_ci" {
 	metadata {
 		name      = "ci"
 		namespace = kubernetes_namespace.lookhub.metadata[0].name
 	}
 }
 
-resource "kubernetes_secret" "ci_token" {
+resource "kubernetes_secret" "lookhub_ci_token" {
 	metadata {
 		annotations = {
-			"kubernetes.io/service-account.name" = kubernetes_service_account.ci.metadata[0].name
+			"kubernetes.io/service-account.name" = kubernetes_service_account.lookhub_ci.metadata[0].name
 		}
 
 		generate_name = "ci-"
-		namespace = kubernetes_namespace.lookhub.metadata[0].name
+		namespace     = kubernetes_namespace.lookhub.metadata[0].name
 	}
 
 	type                           = "kubernetes.io/service-account-token"
@@ -179,7 +127,7 @@ resource "kubernetes_role_binding" "lookhub_ci" {
 
 	subject {
 		kind      = "ServiceAccount"
-		name      = kubernetes_service_account.ci.metadata[0].name
+		name      = kubernetes_service_account.lookhub_ci.metadata[0].name
 		namespace = kubernetes_namespace.lookhub.metadata[0].name
 	}
 }

@@ -1,0 +1,22 @@
+grafana:
+#  service:
+#    type: LoadBalancer
+
+  adminPassword: admin
+
+prometheus:
+#  service:
+#    type: LoadBalancer
+
+  prometheusSpec:
+    podMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelectorNilUsesHelmValues: false
+
+    retention: "15d"
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: "standard"
+          resources:
+            requests:
+              storage: "1Gi"
