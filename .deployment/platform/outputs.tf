@@ -1,19 +1,16 @@
-output "kubeconfig" {
-	value = kind_cluster.default.kubeconfig
+output "kubeconfig_path" {
+	value = kind_cluster.default.kubeconfig_path
 }
 
 output "endpoint" {
 	value = kind_cluster.default.endpoint
 }
 
-output "client_certificate" {
-	value = kind_cluster.default.client_certificate
+output "ci_user" {
+	value = kubernetes_service_account.gitlab_ci.metadata[0].name
 }
 
-output "client_key" {
-	value = kind_cluster.default.client_key
-}
-
-output "cluster_ca_certificate" {
-	value = kind_cluster.default.cluster_ca_certificate
+output "ci_token" {
+	sensitive = true
+	value = lookup(kubernetes_secret.gitlab_ci_token.data, "token")
 }

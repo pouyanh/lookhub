@@ -132,6 +132,20 @@ resource "kubernetes_service_account" "gitlab_ci" {
 	}
 }
 
+resource "kubernetes_secret" "gitlab_ci_token" {
+	metadata {
+		annotations = {
+			"kubernetes.io/service-account.name" = kubernetes_service_account.gitlab_ci.metadata[0].name
+		}
+
+		generate_name = "gitlab-ci-"
+		namespace = kubernetes_namespace.lookhub.metadata[0].name
+	}
+
+	type                           = "kubernetes.io/service-account-token"
+	wait_for_service_account_token = true
+}
+
 resource "kubernetes_role_binding" "lookhub_ns_owner" {
 	metadata {
 		name      = "namespace-owner-role-binding"
