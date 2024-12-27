@@ -125,20 +125,20 @@ resource "kubernetes_role" "lookhub_pods_reader" {
 	}
 }
 
-resource "kubernetes_service_account" "gitlab_ci" {
+resource "kubernetes_service_account" "ci" {
 	metadata {
-		name      = "gitlab-ci"
+		name      = "ci"
 		namespace = kubernetes_namespace.lookhub.metadata[0].name
 	}
 }
 
-resource "kubernetes_secret" "gitlab_ci_token" {
+resource "kubernetes_secret" "ci_token" {
 	metadata {
 		annotations = {
-			"kubernetes.io/service-account.name" = kubernetes_service_account.gitlab_ci.metadata[0].name
+			"kubernetes.io/service-account.name" = kubernetes_service_account.ci.metadata[0].name
 		}
 
-		generate_name = "gitlab-ci-"
+		generate_name = "ci-"
 		namespace = kubernetes_namespace.lookhub.metadata[0].name
 	}
 
@@ -179,7 +179,7 @@ resource "kubernetes_role_binding" "lookhub_ci" {
 
 	subject {
 		kind      = "ServiceAccount"
-		name      = kubernetes_service_account.gitlab_ci.metadata[0].name
+		name      = kubernetes_service_account.ci.metadata[0].name
 		namespace = kubernetes_namespace.lookhub.metadata[0].name
 	}
 }

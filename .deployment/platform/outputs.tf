@@ -7,10 +7,10 @@ output "endpoint" {
 }
 
 output "ci_user" {
-	value = kubernetes_service_account.gitlab_ci.metadata[0].name
+	value = kubernetes_service_account.ci.metadata[0].name
 }
 
 output "ci_token" {
 	sensitive = true
-	value = lookup(kubernetes_secret.gitlab_ci_token.data, "token")
+	value = lookup(kubernetes_secret.ci_token.data, "token")
 }
