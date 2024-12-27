@@ -2,6 +2,8 @@ resource "kubernetes_namespace" "lookhub" {
 	metadata {
 		name = "lookhub"
 	}
+
+	depends_on = [kind_cluster.default]
 }
 
 resource "kubernetes_role" "lookhub_ns_owner" {

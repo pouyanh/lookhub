@@ -17,12 +17,6 @@ resource "kind_cluster" "default" {
 
 			kubeadm_config_patches = [
 				<<-EOT
-				kind: KubeletConfiguration
-				serverTLSBootstrap: true
-				EOT
-			,
-
-				<<-EOT
 				kind: ClusterConfiguration
 				apiServer:
 				  extraArgs:

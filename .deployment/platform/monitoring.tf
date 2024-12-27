@@ -2,6 +2,8 @@ resource "kubernetes_namespace" "monitoring" {
 	metadata {
 		name = "monitoring"
 	}
+
+	depends_on = [kind_cluster.default]
 }
 
 resource "helm_release" "metrics_server" {
@@ -16,7 +18,7 @@ resource "helm_release" "metrics_server" {
 		file("${path.module}/metrics_server_values.yaml")
 	]
 
-	depends_on = [kind_cluster.default]
+	depends_on = [kubernetes_namespace.monitoring]
 }
 
 resource "helm_release" "kube_prometheus_stack" {
@@ -31,7 +33,7 @@ resource "helm_release" "kube_prometheus_stack" {
 		file("${path.module}/kube_prometheus_values.yaml")
 	]
 
-	depends_on = [kind_cluster.default]
+	depends_on = [kubernetes_namespace.monitoring]
 }
 
 data "kubernetes_service" "grafana" {
