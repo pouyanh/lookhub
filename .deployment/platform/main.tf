@@ -1,6 +1,6 @@
 resource "kind_cluster" "default" {
-	name = "cpe-cluster"
-	wait_for_ready = true
+	name            = var.cluster_name
+	kubeconfig_path = "${path.module}/kubeconfig.yaml"
 
 	kind_config {
 		api_version = "kind.x-k8s.io/v1alpha4"
@@ -17,5 +17,180 @@ resource "kind_cluster" "default" {
 		node {
 			role = "worker"
 		}
+	}
+}
+
+resource "kubernetes_cluster_role" "admin" {
+	metadata {
+		name = "cluster-admin-role"
+	}
+
+	rule {
+		api_groups = [""]
+		resources  = ["*"]
+		verbs      = ["*"]
+	}
+}
+
+resource "kubernetes_cluster_role_binding" "admin" {
+	metadata {
+		name = "cluster-admin-role-binding"
+	}
+
+	role_ref {
+		api_group = "rbac.authorization.k8s.io"
+		kind      = "ClusterRole"
+		name      = kubernetes_cluster_role.admin.metadata[0].name
+	}
+
+	subject {
+		kind      = "User"
+		name      = "cpe"
+		api_group = ""
+	}
+}
+
+resource "kubernetes_namespace" "lookhub" {
+	metadata {
+		name = "lookhub"
+	}
+}
+
+resource "kubernetes_role" "lookhub_ns_owner" {
+	metadata {
+		name      = "namespace-owner-role"
+		namespace = kubernetes_namespace.lookhub.metadata[0].name
+	}
+
+	rule {
+		api_groups = [""]  # Core resources
+		resources  = ["*"] # All resources
+		verbs      = ["*"] # Full access
+	}
+
+	rule {
+		api_groups = ["apps"] # Apps group
+		resources  = ["*"]
+		verbs      = ["*"]
+	}
+
+	rule {
+		api_groups = ["batch"] # Batch resources (CronJobs, Jobs)
+		resources  = ["*"]
+		verbs      = ["*"]
+	}
+
+	rule {
+		api_groups = ["rbac.authorization.k8s.io"] # RBAC resources
+		resources  = ["roles", "rolebindings"]
+		verbs      = ["*"]
+	}
+}
+
+resource "kubernetes_role" "lookhub_ci" {
+	metadata {
+		name      = "ci-role"
+		namespace = kubernetes_namespace.lookhub.metadata[0].name
+	}
+
+	rule {
+		api_groups = [""] # Core resources
+		resources  = ["pods", "services", "configmaps", "secrets"]
+		verbs      = ["get", "list", "create", "update", "delete"]
+	}
+
+	rule {
+		api_groups = ["apps"] # Apps group
+		resources  = ["deployments", "statefulsets", "daemonsets", "replicasets"]
+		verbs      = ["get", "list", "create", "update", "delete"]
+	}
+
+	rule {
+		api_groups = ["batch"] # Batch resources
+		resources  = ["jobs", "cronjobs"]
+		verbs      = ["get", "list", "create", "update", "delete"]
+	}
+}
+
+resource "kubernetes_role" "lookhub_pods_reader" {
+	metadata {
+		name      = "pods-reader-role"
+		namespace = kubernetes_namespace.lookhub.metadata[0].name
+	}
+
+	rule {
+		api_groups = [""] # Core resources
+		resources  = ["pods"]
+		verbs      = ["get", "list", "watch"]
+	}
+}
+
+resource "kubernetes_service_account" "gitlab_ci" {
+	metadata {
+		name      = "gitlab-ci"
+		namespace = kubernetes_namespace.lookhub.metadata[0].name
+	}
+}
+
+resource "kubernetes_role_binding" "lookhub_ns_owner" {
+	metadata {
+		name      = "namespace-owner-role-binding"
+		namespace = kubernetes_namespace.lookhub.metadata[0].name
+	}
+
+	role_ref {
+		api_group = "rbac.authorization.k8s.io"
+		kind      = "Role"
+		name      = kubernetes_role.lookhub_ns_owner.metadata[0].name
+	}
+
+	subject {
+		kind      = "User"
+		name      = "cto"
+		api_group = ""
+	}
+}
+
+resource "kubernetes_role_binding" "lookhub_ci" {
+	metadata {
+		name      = "ci-role-binding"
+		namespace = kubernetes_namespace.lookhub.metadata[0].name
+	}
+
+	role_ref {
+		api_group = "rbac.authorization.k8s.io"
+		kind      = "Role"
+		name      = kubernetes_role.lookhub_ci.metadata[0].name
+	}
+
+	subject {
+		kind      = "ServiceAccount"
+		name      = kubernetes_service_account.gitlab_ci.metadata[0].name
+		namespace = kubernetes_namespace.lookhub.metadata[0].name
+	}
+}
+
+resource "kubernetes_role_binding" "lookhub_pods_reader" {
+	metadata {
+		name      = "pods-reader-role-binding"
+		namespace = kubernetes_namespace.lookhub.metadata[0].name
+	}
+
+	role_ref {
+		api_group = "rbac.authorization.k8s.io"
+		kind      = "Role"
+		name      = kubernetes_role.lookhub_pods_reader.metadata[0].name
+	}
+
+	subject {
+		kind      = "User"
+		name      = "qa"
+		api_group = ""
+	}
+
+	subject {
+		kind      = "User"
+		name      = "pm"
+		api_group = ""
 	}
 }

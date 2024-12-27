@@ -14,4 +14,6 @@ terraform {
 
 provider "kind" {}
 
-provider "kubernetes" {}
+provider "kubernetes" {
+	config_path = kind_cluster.default.kubeconfig_path
+}
