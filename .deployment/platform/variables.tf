@@ -16,7 +16,13 @@ variable "ingress_nginx_namespace" {
 	default     = "ingress-nginx"
 }
 
-variable kube_prometheus_stack_helm_version {
+variable "metrics_server_helm_version" {
+	description = "The Helm version for the metrics-server."
+	type        = string
+	default     = "3.12.2"
+}
+
+variable "kube_prometheus_stack_helm_version" {
 	description = "The Helm version for the kube-prometheus-stack."
 	type        = string
 	default     = "67.5.0"
