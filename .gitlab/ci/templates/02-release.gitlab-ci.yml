@@ -12,10 +12,10 @@ release:demo:
     - if: $CI_COMMIT_TAG
     - when: manual
   variables:
-    IMG_REGISTRY: "${IMG_REGISTRY}"
+    IMG: "${IMG}"
     IMG_PUSH_USERNAME: "${IMG_RW_USERNAME}"
     IMG_PUSH_PASSWORD: "${IMG_RW_PASSWORD}"
-    IMG: "${IMG}"
+    IMG_REGISTRY: "${IMG_REGISTRY}"
 
 .post-release:security:
   stage: release

@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -x
+
 BUILD_COMMIT="$(git rev-list -1 HEAD)"
 BUILD_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 BUILD_VERSION="$(git describe --tags --always)"

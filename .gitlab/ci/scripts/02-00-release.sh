@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -x
+
 docker login -u "${CI_REGISTRY_USER}" -p "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
 docker build -f .gitlab/ci/recipes/release.Dockerfile \
 	--build-arg LBL_TITLE="${CI_PROJECT_TITLE}" \
