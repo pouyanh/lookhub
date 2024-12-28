@@ -1,0 +1,43 @@
+stages:
+  - prebuild
+  - build
+  - release
+  - deploy
+
+variables:
+  GO_IMAGE: "registry.snapp.tech/docker/golang:1.22-alpine"
+  GO_PROXY: "https://repo.snapp.tech/repository/goproxy"
+  HELM_IMAGE: "alpine/helm:latest"
+  HELM_CHART_DIR: ".deployment/${CI_PROJECT_NAME}"
+
+  STG_OKD_HOST: "okd4.teh-1.snappcloud.io"
+  STG_APPS_HOST: "apps.private.${STG_OKD_HOST}"
+  STG_REGISTRY_HOST: "image-registry.${STG_APPS_HOST}"
+  STG_REGISTRY_USERNAME: "gitlab-ci"
+  STG_REGISTRY_PASSWORD: "${OKD_TEH1_TOKEN}"
+  STG_NAMESPACE: "${CI_PROJECT_NAMESPACE}"
+  STG_IMAGE_REPO: "${STG_NAMESPACE}/${CI_PROJECT_NAME}"
+  STG_IMAGE_TAG: "${CI_COMMIT_REF_SLUG}"
+  STG_IMAGE_NAME: "${STG_IMAGE_REPO}:${STG_IMAGE_TAG}"
+  STG_IMAGE: "${STG_REGISTRY_HOST}/${STG_IMAGE_NAME}"
+  STG_KUBE_APISERVER: "https://api.${STG_OKD_HOST}:6443"
+  STG_KUBE_TOKEN: "${OKD_TEH1_TOKEN}"
+
+  PRD_OKD_HOST: "okd4.teh-2.snappcloud.io"
+  PRD_APPS_HOST: "apps.private.${PRD_OKD_HOST}"
+  PRD_REGISTRY_HOST: "image-registry.${PRD_APPS_HOST}"
+  PRD_REGISTRY_USERNAME: "gitlab-ci"
+  PRD_REGISTRY_PASSWORD: "${OKD_TEH2_TOKEN}"
+  PRD_NAMESPACE: "${CI_PROJECT_NAMESPACE}"
+  PRD_IMAGE_REPO: "${PRD_NAMESPACE}/${CI_PROJECT_NAME}"
+  PRD_IMAGE_TAG: "${CI_COMMIT_REF_SLUG}"
+  PRD_IMAGE_NAME: "${PRD_IMAGE_REPO}:${PRD_IMAGE_TAG}"
+  PRD_IMAGE: "${PRD_REGISTRY_HOST}/${PRD_IMAGE_NAME}"
+  PRD_KUBE_APISERVER: "https://api.${PRD_OKD_HOST}:6443"
+  PRD_KUBE_TOKEN: "${OKD_TEH2_TOKEN}"
+
+include:
+  - local: .gitlab/ci/templates/00-prebuild.gitlab-ci.yml
+  - local: .gitlab/ci/templates/01-build.gitlab-ci.yml
+  - local: .gitlab/ci/templates/02-release.gitlab-ci.yml
+  - local: .gitlab/ci/templates/03-deploy.gitlab-ci.yml

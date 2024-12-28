@@ -1,0 +1,33 @@
+---
+prebuild:setup:
+  stage: prebuild
+  image: "${GO_IMAGE}"
+  script:
+    - chmod +x ./.gitlab/ci/scripts/00-00-prebuild-setup.sh
+    - ./.gitlab/ci/scripts/00-00-prebuild-setup.sh
+  artifacts:
+    paths:
+      - vendor
+
+prebuild:test:
+  stage: prebuild
+  needs:
+    - prebuild:setup
+  image: "${GO_IMAGE}"
+  coverage: '/total:\s+\(statements\)\s+(\d+.\d+\%)/'
+  script:
+    - chmod +x ./.gitlab/ci/scripts/00-01-prebuild-test.sh
+    - ./.gitlab/ci/scripts/00-01-prebuild-test.sh
+
+prebuild:security:
+  stage: prebuild
+  needs:
+    - prebuild:setup
+  trigger:
+    include:
+      - project: 'security/AppSec'
+        file:
+          - 'sast.yml'
+          - 'secret-detection.yml'
+          - 'iac-scanning.yml'
+          - 'sca.yml'

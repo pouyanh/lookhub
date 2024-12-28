@@ -1,0 +1,65 @@
+---
+.release:
+  stage: release
+  image: docker:latest
+  script:
+    - chmod +x ./.gitlab/ci/scripts/02-00-release.sh
+    - ./.gitlab/ci/scripts/02-00-release.sh
+
+release:staging:
+  extends: .release
+  rules:
+    - if: $CI_COMMIT_TAG
+    - when: manual
+  variables:
+    REGISTRY_HOST: "${STG_REGISTRY_HOST}"
+    REGISTRY_USERNAME: "${STG_REGISTRY_USERNAME}"
+    REGISTRY_PASSWORD: "${STG_REGISTRY_PASSWORD}"
+    IMAGE: "${STG_IMAGE}"
+
+release:production:
+  extends: .release
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: manual
+  variables:
+    REGISTRY_HOST: "${PRD_REGISTRY_HOST}"
+    REGISTRY_USERNAME: "${PRD_REGISTRY_USERNAME}"
+    REGISTRY_PASSWORD: "${PRD_REGISTRY_PASSWORD}"
+    IMAGE: "${PRD_IMAGE}"
+
+.post-release:security:
+  stage: release
+  trigger:
+    include:
+      - project: 'security/AppSec'
+        file:
+          - 'container-scanning.yml'
+          - 'dast.yml'
+  variables:
+    DAST_API_SCAN: "true"
+    # TODO: Get new token from oauth service in previous step & pass it in header
+    # TODO: Download it in previous step & pass it as an artifact
+    DAST_SWAGGER_FILE_ADDR: "https://gitlab.snapp.ir/pouyanh/lookhub/-/blob/master/drivers/api/user/swagger.yml"
+
+post-release:security:staging:
+  extends: .post-release:security
+  needs:
+    - release:staging
+  variables:
+    CONTAINER_SCANNING_IMAGE_NAME: "${STG_IMAGE}"
+    CONTAINER_SCANNING_REGISTRY: "${STG_REGISTRY_HOST}"
+    CONTAINER_SCANNING_USERNAME: "${STG_REGISTRY_USERNAME}"
+    CONTAINER_SCANNING_PASSWORD: "${STG_REGISTRY_PASSWORD}"
+
+post-release:security:production:
+  extends: .post-release:security
+  rules:
+    - if: $CI_COMMIT_TAG
+  needs:
+    - release:production
+  variables:
+    CONTAINER_SCANNING_IMAGE_NAME: "${PRD_IMAGE}"
+    CONTAINER_SCANNING_REGISTRY: "${PRD_REGISTRY_HOST}"
+    CONTAINER_SCANNING_USERNAME: "${PRD_REGISTRY_USERNAME}"
+    CONTAINER_SCANNING_PASSWORD: "${PRD_REGISTRY_PASSWORD}"

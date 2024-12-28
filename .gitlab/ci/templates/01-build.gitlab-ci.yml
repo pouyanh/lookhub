@@ -1,0 +1,14 @@
+---
+build:compile:
+  stage: build
+  image: "${GO_IMAGE}"
+  script:
+    - chmod +x ./.gitlab/ci/scripts/01-00-build.sh
+    - ./.gitlab/ci/scripts/01-00-build.sh
+  variables:
+    BUILD_ENV_FILE: build.env
+  artifacts:
+    reports:
+      dotenv: "${BUILD_ENV_FILE}"
+    paths:
+      - .dist
