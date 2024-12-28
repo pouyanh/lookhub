@@ -158,3 +158,22 @@ resource "kubernetes_role_binding" "lookhub_pods_reader" {
 		api_group = ""
 	}
 }
+
+resource "kubernetes_secret" "private_docker_registry" {
+	metadata {
+		name      = "regcred"
+		namespace = kubernetes_namespace.lookhub.metadata[0].name
+	}
+
+	data = {
+		".dockerconfigjson" = templatefile("${path.module}/dockerconfig.tpl.json", {
+			registry-server   = var.private_docker_registry_server
+			registry-username = var.private_docker_registry_username
+			registry-password = var.private_docker_registry_password
+			registry-email    = var.private_docker_registry_email
+			auth              = base64encode("${var.private_docker_registry_username}:${var.private_docker_registry_password}")
+		})
+	}
+
+	type = "kubernetes.io/dockerconfigjson"
+}

@@ -1,0 +1,5 @@
+{
+	"private_docker_registry_server": "gcr.io",
+	"private_docker_registry_username": "git",
+	"private_docker_registry_password": "secret"
+}

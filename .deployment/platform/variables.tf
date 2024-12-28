@@ -87,3 +87,27 @@ variable "argo_cd_namespace" {
 	type        = string
 	default     = "argocd"
 }
+
+variable "private_docker_registry_server" {
+	description = "Private docker registry hostname"
+	type        = string
+	default     = "registry.snapp.tech"
+}
+
+variable "private_docker_registry_username" {
+	description = "Username be able to pull images from private docker registry"
+	type        = string
+	default     = "gitlab-ci"
+}
+
+variable "private_docker_registry_password" {
+	description = "Access token for private docker registry"
+	type        = string
+	default     = "secret"
+}
+
+variable "private_docker_registry_email" {
+	description = "User email for private docker registry"
+	type        = string
+	default     = "john@example.com"
+}

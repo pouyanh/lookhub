@@ -1,0 +1,10 @@
+{
+	"auths": {
+		"${registry-server}": {
+			"username": "${registry-username}",
+			"password": "${registry-password}",
+			"email": "${registry-email}",
+			"auth": "${auth}"
+		}
+	}
+}
