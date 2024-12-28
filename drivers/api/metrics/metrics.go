@@ -13,7 +13,7 @@ import (
 var API kareless.DriverConstructor = apiDriver
 
 func apiDriver(ss *kareless.Settings, ib *kareless.InstrumentBank, apps []kareless.Application) kareless.Driver {
-	apiSs := settings.APIByName(ss, "metric")
+	apiSs := settings.APIByName(ss, "metrics")
 
 	return newServer(
 		apiSs,

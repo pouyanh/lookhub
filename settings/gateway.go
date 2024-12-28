@@ -73,10 +73,10 @@ func APIs(ss *kareless.Settings) []API {
 func init() {
 	Default[gateways] = map[string]any{
 		"user": map[string]string{
-			gatewayAddress: ":80",
+			gatewayAddress: ":30080",
 		},
 		"metrics": map[string]string{
-			gatewayAddress: ":9080",
+			gatewayAddress: ":30089",
 		},
 	}
 
