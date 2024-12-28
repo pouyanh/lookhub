@@ -1,6 +1,6 @@
 module gitlab.snapp.ir/pouyanh/lookhub
 
-go 1.23.4
+go 1.23.3
 
 require (
 	github.com/go-openapi/errors v0.22.0
