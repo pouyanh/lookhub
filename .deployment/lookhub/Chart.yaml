@@ -1,0 +1,9 @@
+apiVersion: v2
+name: lookhub
+description: A Helm chart for Kubernetes
+type: application
+version: 0.0.1
+appVersion: "0.1.0"
+maintainers:
+  - name: Pouyan Heyratpour
+    email: me@pouyan.dev

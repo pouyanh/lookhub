@@ -1,0 +1,21 @@
+{{- if and .Values.serviceMonitor.enabled -}}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{- include "lookhub.fullname" . }}
+  namespace: {{- include "lookhub.namespace" . }}
+  labels:
+    {{- include "lookhub.labels" . | nindent 4 }}
+spec:
+  namespaceSelector:
+    matchNames:
+      - {{ include "lookhub.namespace" . }}
+  selector:
+    matchLabels:
+      {{- include "lookhub.selectorLabels" . | nindent 6 }}
+  endpoints:
+    - port: metrics
+      scheme: http
+      path: /metrics
+      interval: 15s
+{{- end -}}

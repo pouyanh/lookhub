@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{- include "lookhub.fullname" . }}
+  namespace: {{- include "lookhub.namespace" . }}
+  labels:
+    {{- include "lookhub.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "lookhub.selectorLabels" . | nindent 6 }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: {{ .Values.rollingUpdate.maxUnavailable }}
+      maxSurge: {{ .Values.rollingUpdate.maxSurge }}
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/configmap.yaml") . | sha256sum }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "lookhub.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: {{- include "lookhub.image" . | nindent 8 }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: user
+              containerPort: 80
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 30080
+          # volumeMounts:
+          #   - name: {{ include "lookhub.fullname" . }}
+          #     mountPath: "/etc/lookhub/conf.yaml"
+          #     subPath: "conf.yaml"
+          #    readOnly: true
+          env:
+            - name: DATABASES_DNSLV_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "lookhub.fullname" . }}
+                  key: db_dnslv_host
+            - name: DATABASES_DNSLV_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "lookhub.fullname" . }}
+                  key: db_dnslv_name
+            - name: DATABASES_DNSLV_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "lookhub.fullname" . }}
+                  key: db_dnslv_username
+            - name: DATABASES_DNSLV_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "lookhub.fullname" . }}
+                  key: db_dnslv_password
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

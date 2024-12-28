@@ -1,0 +1,74 @@
+image:
+  # Image registry host to pull images from.
+  registry: registry.snapp.tech
+  # Lookhub image name
+  repository: pouyanh/lookhub
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: ""
+  pullPolicy: IfNotPresent
+  # Image pull secrets
+  pullSecrets: []
+  #   - name: myRegistryKeySecretName
+
+## Overrides for generated resource names
+# See templates/_helpers.tpl
+nameOverride: ""
+fullnameOverride: ""
+
+# namespaceOverride allows you to define where the services are installed into.
+# If not set then they use the namespace of the release.
+# This is helpful when installing as a chart dependency (sub chart).
+namespaceOverride: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+# fsGroup: 2000
+
+securityContext:
+# capabilities:
+#   drop:
+#     - ALL
+#   add:
+#     - NET_BIND_SERVICE
+# readOnlyRootFilesystem: true
+# runAsGroup: 0
+# runAsNonRoot: false
+# runAsUser: 0
+
+# Number of pods if autoscaling.enabled=false
+replicaCount: 1
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+
+# Automatic horizontal scaling
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+rollingUpdate:
+  maxUnavailable: 1
+  maxSurge: 25%
+
+terminationGracePeriodSeconds: 30
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+service:
+  type: "ClusterIP"
+
+serviceMonitor:
+  enabled: true
