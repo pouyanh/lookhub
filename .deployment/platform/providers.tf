@@ -19,11 +19,6 @@ terraform {
 			source  = "hashicorp/null"
 			version = "~> 3.2.1"
 		}
-
-		rancher2 = {
-			source = "rancher/rancher2"
-			version = "6.0.0"
-		}
 	}
 
 	required_version = ">= 1.0.0"

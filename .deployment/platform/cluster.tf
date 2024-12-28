@@ -31,6 +31,11 @@ resource "kind_cluster" "default" {
 				    node-labels: "ingress-ready=true"
 				EOT
 			]
+
+			extra_mounts {
+				host_path      = "${path.module}/.backups"
+				container_path = "/backups"
+			}
 		}
 
 		node {
