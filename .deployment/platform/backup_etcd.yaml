@@ -1,0 +1,57 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: etcd-backup
+  namespace: kube-system
+spec:
+  schedule: "*/2 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          tolerations:
+            - key: "node-role.kubernetes.io/control-plane"
+              operator: "Exists"
+              effect: "NoSchedule"
+          containers:
+            - name: etcd-backup
+              image: registry.k8s.io/etcd:3.5.15-0
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+              args:
+                - -c
+                - etcdctl snapshot save /etcd-backups/etcd-snapshot-$(date +%Y%m%d%H%M%S).db
+                  --endpoints=https://127.0.0.1:2379
+                  --cacert=/certs/etcd/ca.crt
+                  --cert=/certs/etcd/peer.crt
+                  --key=/certs/etcd/peer.key
+              env:
+                - name: ETCDCTL_API
+                  value: "3"
+              volumeMounts:
+                - name: certs
+                  mountPath: /certs
+                  readOnly: true
+                - name: etcd-backups
+                  mountPath: /etcd-backups
+            - name: etcd-backup-purge
+              image: busybox:stable
+              imagePullPolicy: IfNotPresent
+              command:
+                - /bin/sh
+              args:
+                - -c
+                - find /etcd-backups -type f -mtime +30 -name '*.db' -exec rm -- '{}' \;
+              volumeMounts:
+                - name: etcd-backups
+                  mountPath: /etcd-backups
+          restartPolicy: OnFailure
+          volumes:
+            - name: certs
+              hostPath:
+                path: /etc/kubernetes/pki
+                type: Directory
+            - name: etcd-backups
+              hostPath:
+                path: /backups/etcd
