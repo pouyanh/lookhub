@@ -1,0 +1,4 @@
+image:
+  tag: master
+  pullSecrets:
+    - name: regcred
