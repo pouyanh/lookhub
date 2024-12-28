@@ -1,0 +1,3 @@
+extras:
+  serviceMonitor:
+    enabled: true

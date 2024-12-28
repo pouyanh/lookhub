@@ -4,6 +4,30 @@ variable "cluster_name" {
 	default     = "cpe-cluster"
 }
 
+variable "cert_manager_helm_version" {
+	description = "The Helm version for the cert manager."
+	type        = string
+	default     = "1.16.2"
+}
+
+variable "cert_manager_namespace" {
+	description = "The cert manager namespace (it will be created if needed)."
+	type        = string
+	default     = "cert-manager"
+}
+
+variable "kubernetes_dashboard_helm_version" {
+	description = "The Helm version for the kubernetes dashboard."
+	type        = string
+	default     = "7.10.0"
+}
+
+variable "kubernetes_dashboard_namespace" {
+	description = "The kubernetes dashboard namespace (it will be created if needed)."
+	type        = string
+	default     = "kubernetes-dashboard"
+}
+
 variable "ingress_nginx_helm_version" {
 	description = "The Helm version for the nginx ingress controller."
 	type        = string

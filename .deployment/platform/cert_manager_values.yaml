@@ -1,0 +1,8 @@
+crds:
+  enabled: true
+
+enableCertificateOwnerRef: true
+
+prometheus:
+  servicemonitor:
+    enabled: true
