@@ -39,6 +39,7 @@ resource "kubernetes_manifest" "etcd_backup_cronjob" {
               - name: etcd-certs
                 hostPath:
                   path: /etc/kubernetes/pki/etcd
+                  type: DirectoryOrCreate
               - name: etcd-backups
                 hostPath:
                   path: /backups/etcd
