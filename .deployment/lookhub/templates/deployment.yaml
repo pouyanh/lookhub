@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{- include "lookhub.fullname" . }}
-  namespace: {{- include "lookhub.namespace" . }}
+  name: {{ include "lookhub.fullname" . }}
+  namespace: {{ include "lookhub.namespace" . }}
   labels:
     {{- include "lookhub.labels" . | nindent 4 }}
 spec:
@@ -37,7 +37,7 @@ spec:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
-          image: {{- include "lookhub.image" . | nindent 8 }}
+          image: {{ include "lookhub.image" . }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - name: user

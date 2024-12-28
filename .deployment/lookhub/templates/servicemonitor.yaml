@@ -2,8 +2,8 @@
 apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
-  name: {{- include "lookhub.fullname" . }}
-  namespace: {{- include "lookhub.namespace" . }}
+  name: {{ include "lookhub.fullname" . }}
+  namespace: {{ include "lookhub.namespace" . }}
   labels:
     {{- include "lookhub.labels" . | nindent 4 }}
 spec:
