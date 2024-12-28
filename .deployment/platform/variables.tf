@@ -47,7 +47,7 @@ variable "metrics_server_helm_version" {
 }
 
 variable "metrics_server_namespace" {
-	description = "The Helm version for the metrics-server."
+	description = "The metrics namespace (it will be created if needed)."
 	type        = string
 	default     = "metrics"
 }
@@ -59,7 +59,7 @@ variable "kube_prometheus_stack_helm_version" {
 }
 
 variable "kube_prometheus_stack_namespace" {
-	description = "The Helm version for the metrics-server."
+	description = "The kube prometheus stack namespace (it will be created if needed)."
 	type        = string
 	default     = "monitoring"
 }
