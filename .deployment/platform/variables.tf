@@ -40,6 +40,18 @@ variable "ingress_nginx_namespace" {
 	default     = "ingress-nginx"
 }
 
+variable "metallb_helm_version" {
+	description = "The Helm version for the nginx ingress controller."
+	type        = string
+	default     = "0.14.9"
+}
+
+variable "metallb_namespace" {
+	description = "The nginx ingress namespace (it will be created if needed)."
+	type        = string
+	default     = "metallb"
+}
+
 variable "metrics_server_helm_version" {
 	description = "The Helm version for the metrics-server."
 	type        = string
