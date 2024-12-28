@@ -75,3 +75,15 @@ variable "kube_prometheus_stack_namespace" {
 	type        = string
 	default     = "monitoring"
 }
+
+variable "argo_cd_helm_version" {
+	description = "The Helm version for the argo cd."
+	type        = string
+	default     = "7.7.11"
+}
+
+variable "argo_cd_namespace" {
+	description = "The argo cd namespace (it will be created if needed)."
+	type        = string
+	default     = "argocd"
+}
