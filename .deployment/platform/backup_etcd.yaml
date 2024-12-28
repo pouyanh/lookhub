@@ -4,7 +4,9 @@ metadata:
   name: etcd-backup
   namespace: kube-system
 spec:
-  schedule: "*/2 * * * *"
+  schedule: "*/30 * * * *"
+  concurrencyPolicy: Forbid
+  startingDeadlineSeconds: 600
   jobTemplate:
     spec:
       template:
@@ -13,6 +15,7 @@ spec:
             - key: "node-role.kubernetes.io/control-plane"
               operator: "Exists"
               effect: "NoSchedule"
+          hostNetwork: true
           containers:
             - name: etcd-backup
               image: registry.k8s.io/etcd:3.5.15-0
@@ -21,7 +24,7 @@ spec:
                 - /bin/sh
               args:
                 - -c
-                - etcdctl snapshot save /etcd-backups/etcd-snapshot-$(date +%Y%m%d%H%M%S).db
+                - etcdctl snapshot save /etcd-backups/etcd-snapshot-${NOW//[:\.]/-}.db
                   --endpoints=https://127.0.0.1:2379
                   --cacert=/certs/etcd/ca.crt
                   --cert=/certs/etcd/peer.crt
@@ -29,6 +32,10 @@ spec:
               env:
                 - name: ETCDCTL_API
                   value: "3"
+                - name: NOW
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.annotations['kubernetes.io/config.seen']
               volumeMounts:
                 - name: certs
                   mountPath: /certs
