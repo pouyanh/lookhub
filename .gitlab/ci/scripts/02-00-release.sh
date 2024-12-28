@@ -1,7 +1,5 @@
 #!/bin/sh
 
-set -x
-
 docker login -u "${CI_REGISTRY_USER}" -p "${CI_REGISTRY_PASSWORD}" "${CI_REGISTRY}"
 docker build -f .gitlab/ci/recipes/release.Dockerfile \
 	--build-arg LBL_TITLE="${CI_PROJECT_TITLE}" \
@@ -13,5 +11,5 @@ docker build -f .gitlab/ci/recipes/release.Dockerfile \
 	--no-cache \
 	-t "${IMG}" .
 
-docker login -u "${IMG_PUSH_USERNAME}" -p "${IMG_PUSH_PASSWORD}" "${IMG_REGISTRY}"
+docker login -u "${IMG_RW_USERNAME}" -p "${IMG_RW_PASSWORD}" "${IMG_REGISTRY}"
 docker push "${IMG}"

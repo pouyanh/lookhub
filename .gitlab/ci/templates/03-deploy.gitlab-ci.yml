@@ -18,9 +18,3 @@ deploy:demo:
     - post-release:security:demo
   variables:
     ENVIRONMENT: "demo"
-    NAMESPACE: "${KUBE_NS}"
-    KUBE_APISERVER: "${KUBE_ENDPOINT}"
-    KUBE_TOKEN: "${KUBE_TOKEN}"
-    IMG_REGISTRY: "${IMG_REGISTRY}"
-    IMG_REPOSITORY: "${IMG_REPOSITORY}"
-    IMG_TAG: "${IMG_TAG}"

@@ -1,8 +1,8 @@
 #!/bin/sh
 
 helm upgrade --install \
-  --namespace="${NAMESPACE}" \
-  --kube-apiserver="${KUBE_APISERVER}" \
+  --namespace="${KUBE_NS}" \
+  --kube-apiserver="${KUBE_ENDPOINT}" \
   --kube-token="${KUBE_TOKEN}" \
   --set environment="${ENVIRONMENT}" \
   --set image.registry="${IMG_REGISTRY}" \
