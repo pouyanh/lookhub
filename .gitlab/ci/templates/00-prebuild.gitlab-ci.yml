@@ -9,12 +9,22 @@ prebuild:setup:
     paths:
       - vendor
 
+# todo: prebuild:lint:
+#   stage: prebuild
+#   needs:
+#     - prebuild:setup
+#   image: "${GO_IMAGE}"
+#   script:
+#     - chmod +x ./.gitlab/ci/scripts/00-02-prebuild-lint.sh
+#     - ./.gitlab/ci/scripts/00-02-prebuild-lint.sh
+
 prebuild:test:
   stage: prebuild
   needs:
     - prebuild:setup
   image: "${GO_IMAGE}"
   coverage: '/total:\s+\(statements\)\s+(\d+.\d+\%)/'
+  # todo: INTEGRATION_TEST: - if: $CI_COMMIT_TAG
   script:
     - chmod +x ./.gitlab/ci/scripts/00-01-prebuild-test.sh
     - ./.gitlab/ci/scripts/00-01-prebuild-test.sh

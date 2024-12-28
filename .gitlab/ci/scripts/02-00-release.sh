@@ -9,7 +9,7 @@ docker build -f .gitlab/ci/recipes/release.Dockerfile \
 	--build-arg BUILD_VERSION="${BUILD_VERSION}" \
 	--build-arg BUILD_DATE="${BUILD_DATE}" \
 	--no-cache \
-	-t "${IMAGE}" .
+	-t "${IMG}" .
 
-docker login -u "${REGISTRY_USERNAME}" -p "${REGISTRY_PASSWORD}" "${REGISTRY_HOST}"
-docker push "${IMAGE}"
+docker login -u "${IMG_PUSH_USERNAME}" -p "${IMG_PUSH_PASSWORD}" "${IMG_REGISTRY}"
+docker push "${IMG}"
