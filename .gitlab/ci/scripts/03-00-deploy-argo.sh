@@ -1,6 +1,4 @@
-#!/bin/bash
-
-set -x
+#!/bin/sh
 
 argocd login "${ARGO_ENDPOINT}" --auth-token "${ARGO_TOKEN}" --insecure
 argocd app sync "${CI_PROJECT_NAME}"
