@@ -1,0 +1,48 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: {{ include "lookhub.fullname" . }}
+  namespace: {{ include "lookhub.namespace" . }}
+  labels:
+    {{- include "lookhub.labels" . | nindent 4 }}
+spec:
+  resyncPeriod: 30s
+  instanceSelector:
+    matchLabels:
+      dashboards: "grafana"
+  json: >
+    {
+      "title": "LookHub Dashboard",
+      "timezone": "browser",
+      "refresh": "5s",
+      "panels": [
+        {
+          "id": 1,
+          "title": "Cache Hit Ratio",
+          "type": "timeseries",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "refId": "A",
+              "expr": "rate(snp_lookhub_cache_hits_total[5m]) / rate(snp_lookhub_requests_total[5m])"
+            }
+          ]
+        },
+        {
+          "id": 2,
+          "title": "Requests Rate",
+          "type": "timeseries",
+          "datasource": "Prometheus",
+          "targets": [
+            {
+              "refId": "B",
+              "expr": "rate(snp_lookhub_requests_total[5m])""
+            }
+          ]
+        }
+      ],
+      "time": {
+        "from": "now-6h",
+        "to": "now"
+      }
+    }
