@@ -100,6 +100,18 @@ variable "postgres_operator_namespace" {
 	default     = "postgres-operator"
 }
 
+variable "grafana_operator_helm_version" {
+	description = "The Helm version for the grafana operator."
+	type        = string
+	default     = "v5.15.1"
+}
+
+variable "grafana_operator_namespace" {
+	description = "The grafana operator namespace (it will be created if needed)."
+	type        = string
+	default     = "grafana-operator"
+}
+
 variable "private_docker_registry_server" {
 	description = "Private docker registry hostname"
 	type        = string
