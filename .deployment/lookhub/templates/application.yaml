@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: {{ include "lookhub.fullname" . }}
+  namespace: {{ include "lookhub.namespace" . }}
+  labels:
+    {{- include "lookhub.labels" . | nindent 4 }}
+spec:
+  project: default
+  source:
+    repoURL: https://gitlab.snapp.ir/pouyanh/lookhub
+    targetRevision: master
+    path: .deployment/lookhub
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: {{ include "lookhub.namespace" . }}
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

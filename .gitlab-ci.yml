@@ -9,6 +9,7 @@ variables:
   GO_PROXY: "https://repo.snapp.tech/repository/goproxy"
   HELM_IMAGE: "alpine/helm:latest"
   HELM_CHART_DIR: ".deployment/${CI_PROJECT_NAME}"
+  ARGO_IMAGE: "argoproj/argocd:v2.6.15"
 
   IMG_REGISTRY:
     description: "Docker image registry to push the image into such as `image-registry.apps.private.okd4.teh-1.snappcloud.io`. Default = GitLab's container registry"
@@ -26,6 +27,13 @@ variables:
     description: "Docker image registry password. Default = pipeline token"
     value: "${CI_REGISTRY_PASSWORD}"
   IMG: "${IMG_REGISTRY}/${IMG_REPOSITORY}:${IMG_TAG}"
+
+  ARGO_ENDPOINT:
+    description: "ArgoCD server url. Default = https://argocd.okd4.teh-1.snappcloud.io"
+    value: "https://argocd.okd4.teh-1.snappcloud.io"
+  ARGO_TOKEN:
+    description: "ArgoCD auth token. Default = ARGO_TOKEN_TEH1 secret"
+    value: "${ARGO_TOKEN_TEH1}"
 
   KUBE_NS:
     description: "Kubernetes namespace or OpenShift project to deploy onto. Default = project-namespace"
