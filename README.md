@@ -1,34 +1,37 @@
 # LookHub
-Domain name lookup center
-
-# Usage
-Visit: [http://lookhub.cloud.snp/docs][lookhub-swagger]
-Visit: [http://lookhub.cloud.snp][lookhub]
-Visit: [http://pgadmin.cloud.snp:8080][pgadmin]
+LookHub is domain name lookup service over http api.
+It collects a domain name resource records (A, NS, MX, ...) which includes ip address, name servers and other details.
 
 # Run local development environment
+There is a simple development environment built using docker-compose which runs LookHub from source code.
+And whenever source code changes locally it reloads the service (hot-reload) powered by [PolyWatch][polywatch].
 
 ```shell
 docker-compose up -d --remove-orphans
 ```
 
+By using [autodns][autodns] you can reach services locally using their virtual fqdn (*.cloud.snp).
+* LookHub API Docs: [http://lookhub.cloud.snp/docs][lookhub-swagger]
+* LookHub API: [http://lookhub.cloud.snp][lookhub-user-api]
+* Postgres UI: [http://pgadmin.cloud.snp:8080][pgadmin]
+
 # Deployment
+There are two deployment mechanisms which are described below.
 
 ## Local Kubernetes Cluster
-
-Install Terraform
-
+To simulate production environment install [Terraform][terraform] and
+create the local k8s cluster provided in [.deployment/platform](.deployment/platform):
 ```shell
 cd .deployment/platform
 terraform init
 ```
 
-Create _terraform.tfvars.json_ file
+In order to let scheduler pull docker images from private docker registry
+you should set credentials in _terraform.tfvars.json_ file. It's ignored by git vcs:
 ```shell
 copy terraform.tfvars.sample.json terraform.tfvars.json
 ```
-
-Fill in private docker registry credentials
+And fill in private docker registry credentials
 ```json
 {
 	"private_docker_registry_server": "registry.snapp.tech",
@@ -36,18 +39,15 @@ Fill in private docker registry credentials
 	"private_docker_registry_password": "your-gitlab-access-token-with-read-registry-scope"
 }
 ```
-
-Setup local cluster
+Finally, bring the local cluster up:
 ```shell
 terraform apply
 ```
-
-Ensure successful setup
+Ensure successful setup using [kubectl][kubectl]:
 ```shell
 KUBECONFIG=$(terraform output -raw kubeconfig_path) kubectl get pods --all-namespaces -o wide
 ```
-
-Install helm and deploy lookhub helm chart on local cluster using local values file
+Install [helm][helm] and deploy LookHub [helm chart](.deployment/lookhub/Chart.yaml) on local cluster using [local values file](.deployment/lookhub/values-local.yaml)
 ```shell
 KUBECONFIG=$(terraform output -raw kubeconfig_path) helm upgrade --install \
   --namespace="lookhub" \
@@ -55,10 +55,15 @@ KUBECONFIG=$(terraform output -raw kubeconfig_path) helm upgrade --install \
   lookhub ../lookhub -f ../lookhub/values-local.yaml
 ```
 
-# Development
+## Remote Kubernetes Cluster using Gitlab CI/CD
 
-## Packages
+# Source code
 
-[pgadmin]: http://pgadmin.cloud.snp:8080
-[lookhub]: http://lookhub.cloud.snp
+[autodns]: https://github.com/pouyanh/autodns
+[polywatch]: https://pouyanh.github.io/polywatch
 [lookhub-swagger]: http://lookhub.cloud.snp/docs
+[lookhub-user-api]: http://lookhub.cloud.snp
+[pgadmin]: http://pgadmin.cloud.snp:8080
+[terraform]: https://www.terraform.io/
+[kubectl]: https://kubernetes.io/docs/reference/kubectl
+[helm]: https://helm.sh/

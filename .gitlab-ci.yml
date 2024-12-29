@@ -10,16 +10,32 @@ variables:
   HELM_IMAGE: "alpine/helm:latest"
   HELM_CHART_DIR: ".deployment/${CI_PROJECT_NAME}"
 
-  IMG_REGISTRY: "${CI_REGISTRY}"
-  IMG_REPOSITORY: "${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
-  IMG_TAG: "${CI_COMMIT_REF_NAME}"
+  IMG_REGISTRY:
+    description: "Docker image registry to push the image into. Default = GitLab's container registry"
+    value: "${CI_REGISTRY}"
+  IMG_REPOSITORY:
+    description: "Docker image name. Default = project-namespace/project-name"
+    value: "${CI_PROJECT_NAMESPACE}/${CI_PROJECT_NAME}"
+  IMG_TAG:
+    description: "Docker image tag. Default = The branch or tag name for which project is built"
+    value: "${CI_COMMIT_REF_NAME}"
+  IMG_RW_USERNAME:
+    description: "Docker image registry username with read/write access. Default = gitlab-ci aka pipeline user"
+    value: "${CI_REGISTRY_USER}"
+  IMG_RW_PASSWORD:
+    description: "Docker image registry password. Default = pipeline token"
+    value: "${CI_REGISTRY_PASSWORD}"
   IMG: "${IMG_REGISTRY}/${IMG_REPOSITORY}:${IMG_TAG}"
-  IMG_RW_USERNAME: "${CI_REGISTRY_USER}"
-  IMG_RW_PASSWORD: "${CI_REGISTRY_PASSWORD}"
 
-  KUBE_NS: "${CI_PROJECT_NAMESPACE}"
-  KUBE_ENDPOINT: "https://api.okd4.teh-1.snappcloud.io:6443"
-  KUBE_TOKEN: "${KUBE_TOKEN_TEH1}"
+  KUBE_NS:
+    description: "Kubernetes namespace or OpenShift project to deploy onto. Default = project-namespace"
+    value: "${CI_PROJECT_NAMESPACE}"
+  KUBE_ENDPOINT:
+    description: "Kubernetes cluster api url. Default = https://api.okd4.teh-1.snappcloud.io:6443"
+    value: "https://api.okd4.teh-1.snappcloud.io:6443"
+  KUBE_TOKEN:
+    description: "Kubernetes cluster api token. Default = KUBE_TOKEN_TEH1 secret"
+    value: "${KUBE_TOKEN_TEH1}"
 
 include:
   - local: .gitlab/ci/templates/00-prebuild.gitlab-ci.yml
