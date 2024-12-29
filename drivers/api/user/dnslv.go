@@ -9,9 +9,12 @@ import (
 	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
 	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/models"
 	. "gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/restapi/operations/dnslv"
+	"gitlab.snapp.ir/pouyanh/lookhub/lutel"
 )
 
 func (s server) handleDNSLVLookup(params DnslvLookupParams) middleware.Responder {
+	lutel.RequestCnt.Inc()
+
 	tfm := s.transformer()
 
 	ctx := params.HTTPRequest.Context()

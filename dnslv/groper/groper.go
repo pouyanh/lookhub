@@ -7,6 +7,7 @@ import (
 	"github.com/janstoon/toolbox/kareless"
 
 	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
+	"gitlab.snapp.ir/pouyanh/lookhub/lutel"
 	"gitlab.snapp.ir/pouyanh/lookhub/settings"
 )
 
@@ -29,10 +30,10 @@ func NewApp(ss *kareless.Settings, ib *kareless.InstrumentBank) *Application {
 func (app Application) Lookup(ctx context.Context, domainName string) (*dnslv.Domain, error) {
 	domain, err := app.domains.GetUnexpiredDomain(ctx, domainName, app.cacheTTL)
 	if err == nil {
-		// todo: increase cache hit metric
+		lutel.CacheHitCnt.Inc()
 	} else {
 		// todo: log the error and ignore
-		// todo: increase cache miss metric
+		lutel.CacheMissCnt.Inc()
 
 		domain, err = dnslv.DomainByName(dnslv.DomainName(domainName))
 		if err != nil {

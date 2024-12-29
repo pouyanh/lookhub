@@ -38,6 +38,10 @@ func (repo domainRepo) GetUnexpiredDomain(ctx context.Context, name string, ttl 
 		return nil, err
 	}
 
+	if len(rows) == 0 {
+		return nil, bricks.ErrNotFound
+	}
+
 	err = dst.AddRecords(tricks.Map(rows, func(src db.GetUnexpiredDomainRow) dnslv.ResourceRecord {
 		return dnslv.ResourceRecord{
 			Type:  dnslv.ResourceRecordType(tricks.PtrVal(src.ResourceRecordType)),
