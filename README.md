@@ -11,9 +11,9 @@ docker-compose up -d --remove-orphans
 ```
 
 By using [autodns][autodns] you can reach services locally using their virtual fqdn under _cloud.snp_ domain.
-* LookHub API Docs: [http://lookhub.cloud.snp/docs][lookhub-swagger]
-* LookHub API: [http://lookhub.cloud.snp][lookhub-user-api]
-* Postgres UI: [http://pgadmin.cloud.snp:8080][pgadmin]
+* LookHub API Swagger UI: http://lookhub.cloud.snp/docs
+* LookHub API: http://lookhub.cloud.snp
+* Postgres UI: http://pgadmin.cloud.snp:8080
 
 # Deployment
 There are two deployment mechanisms which are described below.
@@ -65,9 +65,6 @@ which should be triggered manually.
 
 [autodns]: https://github.com/pouyanh/autodns
 [polywatch]: https://pouyanh.github.io/polywatch
-[lookhub-swagger]: http://lookhub.cloud.snp/docs
-[lookhub-user-api]: http://lookhub.cloud.snp
-[pgadmin]: http://pgadmin.cloud.snp:8080
 [terraform]: https://www.terraform.io/
 [kubectl]: https://kubernetes.io/docs/reference/kubectl
 [helm]: https://helm.sh/
