@@ -5,7 +5,8 @@ It collects a domain name resource records (A, NS, MX, ...) which includes ip ad
 # Run local development environment
 There is a simple development environment built using docker-compose which runs LookHub from source code.
 And whenever source code changes locally it reloads the service (hot-reload) powered by [PolyWatch][polywatch].
-
+It's recommended to create [docker-compose.override.yml](docker-compose.override.yml), which is git ignored,
+and put your _gitlab access token_, having read_repository scope, in it.
 ```shell
 docker-compose up -d --remove-orphans
 ```
@@ -73,8 +74,8 @@ LookHub is written in [Golang][golang]. 3 types of components work together here
 A **bundle** is a logical grouping of components—applications, domain models, adapters, and drivers—that
 share a common **bounded context**.
 
-The [_dnslv_](./dnslv) bundle consists of [groper](./dnslv/groper) application,
-a domain model and some [adapters](./dnslv/adapters/adapters.go).
+The [_dnslv_](dnslv) bundle consists of [groper](dnslv/groper) application,
+a domain model and some [adapters](dnslv/adapters/adapters.go).
 
 [autodns]: https://github.com/pouyanh/autodns
 [polywatch]: https://pouyanh.github.io/polywatch
