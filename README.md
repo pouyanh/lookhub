@@ -62,9 +62,23 @@ from the project’s **Build > Pipelines** section a **deploy** job runs on succ
 which should be triggered manually.
 
 # Source code
+LookHub is written in [Golang][golang]. 3 types of components work together here.
+1. **Driver**: Exposes the application's use-case APIs to the external world, such as through an HTTP API.
+	 They also drive application workflows by initiating interactions, like scheduling tasks or reacting to external events.
+2. **Application**:  Coordinates business actions and workflows in conjunction with the domain model,
+	 without containing the business logic itself.
+3. **Adapter**: Facilitates application side effects by implementing ports required by the application.
+	 They handle communication with external systems, such as databases or third-party services.
+
+A **bundle** is a logical grouping of components—applications, domain models, adapters, and drivers—that
+share a common **bounded context**.
+
+The [_dnslv_](./dnslv) bundle consists of [groper](./dnslv/groper) application,
+a domain model and some [adapters](./dnslv/adapters/adapters.go).
 
 [autodns]: https://github.com/pouyanh/autodns
 [polywatch]: https://pouyanh.github.io/polywatch
-[terraform]: https://www.terraform.io/
+[terraform]: https://www.terraform.io
 [kubectl]: https://kubernetes.io/docs/reference/kubectl
-[helm]: https://helm.sh/
+[helm]: https://helm.sh
+[golang]: https://go.dev
