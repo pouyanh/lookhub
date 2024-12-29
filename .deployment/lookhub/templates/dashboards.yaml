@@ -1,18 +1,16 @@
-apiVersion: grafana.integreatly.org/v1beta1
-kind: GrafanaDashboard
+apiVersion: v1
+kind: ConfigMap
 metadata:
-  name: {{ include "lookhub.fullname" . }}
+  name: {{ include "lookhub.fullname" . }}-dashboard
   namespace: {{ include "lookhub.namespace" . }}
   labels:
     {{- include "lookhub.labels" . | nindent 4 }}
-spec:
-  resyncPeriod: 30s
-  instanceSelector:
-    matchLabels:
-      dashboards: "grafana"
-  json: >
+    grafana_dashboard: "1" # Label required for Grafana sidecar discovery
+data:
+  dashboard.json: >
     {
       "title": "LookHub Dashboard",
+      "tags": ["lookhub"],
       "timezone": "browser",
       "refresh": "5s",
       "panels": [
@@ -26,7 +24,13 @@ spec:
               "refId": "A",
               "expr": "rate(snp_lookhub_cache_hits_total[5m]) / rate(snp_lookhub_requests_total[5m])"
             }
-          ]
+          ],
+          "gridPos": {
+            "x": 0,
+            "y": 0,
+            "h": 10,
+            "w": 12
+          }
         },
         {
           "id": 2,
@@ -36,13 +40,20 @@ spec:
           "targets": [
             {
               "refId": "B",
-              "expr": "rate(snp_lookhub_requests_total[5m])""
+              "expr": "rate(snp_lookhub_requests_total[5m])"
             }
-          ]
+          ],
+          "gridPos": {
+            "x": 12,
+            "y": 0,
+            "h": 10,
+            "w": 12
+          }
         }
       ],
       "time": {
         "from": "now-6h",
         "to": "now"
-      }
+      },
+      "style": "dark"
     }
