@@ -10,7 +10,7 @@ And whenever source code changes locally it reloads the service (hot-reload) pow
 docker-compose up -d --remove-orphans
 ```
 
-By using [autodns][autodns] you can reach services locally using their virtual fqdn (*.cloud.snp).
+By using [autodns][autodns] you can reach services locally using their virtual fqdn under _cloud.snp_ domain.
 * LookHub API Docs: [http://lookhub.cloud.snp/docs][lookhub-swagger]
 * LookHub API: [http://lookhub.cloud.snp][lookhub-user-api]
 * Postgres UI: [http://pgadmin.cloud.snp:8080][pgadmin]
@@ -56,6 +56,10 @@ KUBECONFIG=$(terraform output -raw kubeconfig_path) helm upgrade --install \
 ```
 
 ## Remote Kubernetes Cluster using Gitlab CI/CD
+By default, ci/cd builds the docker image and pushes it to GitLab's container registry.
+Whenever a user run the pipeline using **New pipeline** in the GitLab UI,
+from the project’s **Build > Pipelines** section a **deploy** job runs on successful release step
+which should be triggered manually.
 
 # Source code
 

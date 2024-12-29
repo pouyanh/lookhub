@@ -11,7 +11,7 @@ variables:
   HELM_CHART_DIR: ".deployment/${CI_PROJECT_NAME}"
 
   IMG_REGISTRY:
-    description: "Docker image registry to push the image into. Default = GitLab's container registry"
+    description: "Docker image registry to push the image into such as `image-registry.apps.private.okd4.teh-1.snappcloud.io`. Default = GitLab's container registry"
     value: "${CI_REGISTRY}"
   IMG_REPOSITORY:
     description: "Docker image name. Default = project-namespace/project-name"

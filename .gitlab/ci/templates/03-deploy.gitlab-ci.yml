@@ -14,6 +14,8 @@
 
 deploy:demo:
   extends: .deploy
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "web"
   needs:
     - post-release:security:demo
   variables:
