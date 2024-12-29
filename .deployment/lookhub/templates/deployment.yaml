@@ -54,25 +54,16 @@ spec:
           #    readOnly: true
           env:
             - name: DATABASES_DNSLV_HOST
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "lookhub.fullname" . }}
-                  key: db_dnslv_host
+              value: postgres-cluster
             - name: DATABASES_DNSLV_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "lookhub.fullname" . }}
-                  key: db_dnslv_name
+              value: lookhub
             - name: DATABASES_DNSLV_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: {{ include "lookhub.fullname" . }}
-                  key: db_dnslv_username
+              value: lookhub
             - name: DATABASES_DNSLV_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "lookhub.fullname" . }}
-                  key: db_dnslv_password
+                  name: lookhub.postgres-cluster.credentials.postgresql.acid.zalan.do
+                  key: lookhub
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}

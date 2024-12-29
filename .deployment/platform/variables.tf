@@ -88,6 +88,18 @@ variable "argo_cd_namespace" {
 	default     = "argocd"
 }
 
+variable "postgres_operator_helm_version" {
+	description = "The Helm version for the postgres operator."
+	type        = string
+	default     = "1.14.0"
+}
+
+variable "postgres_operator_namespace" {
+	description = "The postgres operator namespace (it will be created if needed)."
+	type        = string
+	default     = "postgres-operator"
+}
+
 variable "private_docker_registry_server" {
 	description = "Private docker registry hostname"
 	type        = string

@@ -1,0 +1,21 @@
+apiVersion: acid.zalan.do/v1
+kind: postgresql
+metadata:
+  name: postgres-cluster
+  namespace: {{ include "lookhub.namespace" . }}
+  labels:
+    {{- include "lookhub.labels" . | nindent 4 }}
+spec:
+  teamId: {{ include "lookhub.name" . }}
+  volume:
+    size: 1Gi
+  numberOfInstances: 2
+  users:
+    postgres:
+      - superuser
+      - createdb
+    lookhub: []
+  databases:
+    lookhub: lookhub
+  postgresql:
+    version: "17"
