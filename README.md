@@ -55,6 +55,10 @@ KUBECONFIG=$(terraform output -raw kubeconfig_path) helm upgrade --install \
   --kube-token="$(terraform output -raw lookhub_ci_token)" \
   lookhub ../lookhub -f ../lookhub/values-local.yaml
 ```
+Access LookHub on http://localhost:8080/docs using port forward:
+```shell
+KUBECONFIG=$(terraform output -raw kubeconfig_path) kubectl port-forward -n lookhub svc/lookhub 8080:80
+```
 
 ## Remote Kubernetes Cluster using Gitlab CI/CD
 By default, ci/cd builds the docker image and pushes it to GitLab's container registry.
