@@ -9,6 +9,8 @@ metadata:
 data:
   dashboard.json: >
     {
+      "id": null,
+      "uid": "snplookhub",
       "title": "LookHub Dashboard",
       "tags": ["lookhub"],
       "timezone": "browser",

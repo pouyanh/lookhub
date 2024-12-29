@@ -59,6 +59,10 @@ Access LookHub on http://localhost:8080/docs using port forward:
 ```shell
 KUBECONFIG=$(terraform output -raw kubeconfig_path) kubectl port-forward -n lookhub svc/lookhub 8080:80
 ```
+See the dashboard on Grafana under LookHub Dashboard http://localhost:8089/d/snplookhub/lookhub-dashboard using port forward:
+```shell
+KUBECONFIG=$(terraform output -raw kubeconfig_path) kubectl port-forward -n monitoring svc/kube-prometheus-stack-grafana 8089:80
+```
 
 ## Remote Kubernetes Cluster using Gitlab CI/CD
 By default, ci/cd builds the docker image and pushes it to GitLab's container registry.
