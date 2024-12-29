@@ -3,12 +3,12 @@ deploy:argo:
   stage: prebuild
   image:
     name: "${ARGO_IMAGE}"
+    entrypoint: ["/bin/sh", "-c"]
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
   script:
-    - argocd login "${ARGO_ENDPOINT}" --auth-token "${ARGO_TOKEN}" --insecure
-    - argocd app sync "${CI_PROJECT_NAME}"
-    - argocd app wait "${CI_PROJECT_NAME}" --health --timeout 300
+    - chmod +x ./.gitlab/ci/scripts/03-00-deploy-argo.sh
+    - ./.gitlab/ci/scripts/03-00-deploy-argo.sh
 
 .deploy:helm:
   stage: deploy
