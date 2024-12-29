@@ -29,8 +29,8 @@ variables:
   IMG: "${IMG_REGISTRY}/${IMG_REPOSITORY}:${IMG_TAG}"
 
   ARGO_ENDPOINT:
-    description: "ArgoCD server url. Default = https://argocd.okd4.teh-1.snappcloud.io"
-    value: "https://argocd.okd4.teh-1.snappcloud.io"
+    description: "ArgoCD server hostname. Default = argocd.okd4.teh-1.snappcloud.io"
+    value: "argocd.okd4.teh-1.snappcloud.io"
   ARGO_TOKEN:
     description: "ArgoCD auth token. Default = ARGO_TOKEN_TEH1 secret"
     value: "${ARGO_TOKEN_TEH1}"
