@@ -1,9 +1,9 @@
 ---
 deploy:argo:
-  stage: deploy
+  stage: prebuild
   image:
     name: "${ARGO_IMAGE}"
-    entrypoint: ["/bin/sh", "-c"]
+    entrypoint: ["/bin/bash", "-c"]
   rules:
     - if: $CI_COMMIT_BRANCH == "master"
   script:
