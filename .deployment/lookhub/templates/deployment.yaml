@@ -47,25 +47,28 @@ spec:
             httpGet:
               path: /healthz
               port: 30080
-          # volumeMounts:
-          #   - name: {{ include "lookhub.fullname" . }}
-          #     mountPath: "/etc/lookhub/conf.yaml"
-          #     subPath: "conf.yaml"
-          #    readOnly: true
+          volumeMounts:
+            - name: {{ include "lookhub.fullname" . }}
+              mountPath: "/etc/lookhub/conf.yaml"
+              subPath: "conf.yaml"
+              readOnly: true
           env:
-            - name: DATABASES_DNSLV_HOST
-              value: postgres-cluster
-            - name: DATABASES_DNSLV_NAME
-              value: lookhub
             - name: DATABASES_DNSLV_USERNAME
-              value: lookhub
+              valueFrom:
+                secretKeyRef:
+                  name: lookhub.postgres-cluster.credentials.postgresql.acid.zalan.do
+                  key: username
             - name: DATABASES_DNSLV_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: lookhub.postgres-cluster.credentials.postgresql.acid.zalan.do
-                  key: lookhub
+                  key: password
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: {{ include "lookhub.fullname" . }}
+          configMap:
+            name: {{ include "lookhub.fullname" . }}
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}

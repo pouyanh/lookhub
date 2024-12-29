@@ -5,3 +5,33 @@ metadata:
   namespace: {{ include "lookhub.namespace" . }}
   labels:
     {{- include "lookhub.labels" . | nindent 4 }}
+data:
+  conf.yaml: |
+    mode: privileged
+
+    gateways:
+      user:
+        address: 0.0.0.0:30080
+        proto: tcp
+      metrics:
+        address: 0.0.0.0:30089
+        proto: tcp
+
+    apis:
+      user:
+        cors.origin: localhost *
+        gateways:
+          - user
+      metrics:
+        cors.origin: localhost *
+        gateways:
+          - metrics
+
+    databases:
+      dnslv:
+        adapter: postgresql
+        host: postgres-cluster
+        port: 5432
+        name: lookhub
+        username: postgres
+        password: postgres

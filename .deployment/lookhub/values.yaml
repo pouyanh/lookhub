@@ -37,7 +37,7 @@ securityContext:
 # runAsUser: 0
 
 # Number of pods if autoscaling.enabled=false
-replicaCount: 1
+replicaCount: 2
 
 resources:
   limits:
