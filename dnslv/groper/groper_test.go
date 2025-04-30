@@ -10,9 +10,9 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
-	"gitlab.snapp.ir/pouyanh/lookhub/dnslv/groper"
-	"gitlab.snapp.ir/pouyanh/lookhub/settings"
+	"github.com/pouyanh/lookhub/dnslv"
+	"github.com/pouyanh/lookhub/dnslv/groper"
+	"github.com/pouyanh/lookhub/settings"
 )
 
 func TestApplication_Lookup(t *testing.T) {

@@ -3,9 +3,9 @@ package user
 import (
 	"github.com/go-openapi/runtime/middleware"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/config"
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/models"
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/restapi/operations/maintenance"
+	"github.com/pouyanh/lookhub/config"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/models"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/restapi/operations/maintenance"
 )
 
 func (s server) handleHealthCheck(_ maintenance.HealthCheckParams) middleware.Responder {

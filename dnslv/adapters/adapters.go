@@ -4,8 +4,8 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/janstoon/toolbox/kareless"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/dnslv/adapters/db"
-	"gitlab.snapp.ir/pouyanh/lookhub/settings"
+	"github.com/pouyanh/lookhub/dnslv/adapters/db"
+	"github.com/pouyanh/lookhub/settings"
 )
 
 var Adapters = []kareless.InstrumentInjector{

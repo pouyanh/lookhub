@@ -10,7 +10,7 @@ import (
 	"github.com/miekg/dns"
 	"golang.org/x/sync/errgroup"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
+	"github.com/pouyanh/lookhub/dnslv"
 )
 
 type dnsClient struct {

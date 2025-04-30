@@ -24,7 +24,7 @@ import (
 	flags "github.com/jessevdk/go-flags"
 	"golang.org/x/net/netutil"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/restapi/operations"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/restapi/operations"
 )
 
 const (

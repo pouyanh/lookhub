@@ -9,8 +9,8 @@ import (
 	"github.com/orlangure/gnomock"
 	"github.com/orlangure/gnomock/preset/postgres"
 
-	"gitlab.snapp.ir/pouyanh/lookhub"
-	"gitlab.snapp.ir/pouyanh/lookhub/settings"
+	"github.com/pouyanh/lookhub"
+	"github.com/pouyanh/lookhub/settings"
 )
 
 func testing() []kareless.InstrumentCatalogue {

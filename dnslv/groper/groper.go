@@ -6,9 +6,9 @@ import (
 
 	"github.com/janstoon/toolbox/kareless"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
-	"gitlab.snapp.ir/pouyanh/lookhub/lutel"
-	"gitlab.snapp.ir/pouyanh/lookhub/settings"
+	"github.com/pouyanh/lookhub/dnslv"
+	"github.com/pouyanh/lookhub/lutel"
+	"github.com/pouyanh/lookhub/settings"
 )
 
 type Application struct {

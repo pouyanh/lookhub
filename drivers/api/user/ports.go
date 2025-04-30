@@ -3,7 +3,7 @@ package user
 import (
 	"context"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
+	"github.com/pouyanh/lookhub/dnslv"
 )
 
 type DNSLVLookup interface {

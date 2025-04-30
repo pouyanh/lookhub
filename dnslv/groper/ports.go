@@ -4,7 +4,7 @@ import (
 	"context"
 	"time"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
+	"github.com/pouyanh/lookhub/dnslv"
 )
 
 type domainRepository interface {

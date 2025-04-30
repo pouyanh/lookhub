@@ -1,6 +1,6 @@
 image:
   # Image registry host to pull images from.
-  registry: registry.snapp.tech
+  registry: ghcr.io
   # Lookhub image name
   repository: pouyanh/lookhub
   # Overrides the image tag whose default is the chart appVersion.

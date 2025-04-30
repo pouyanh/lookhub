@@ -13,7 +13,7 @@ import (
 	"github.com/go-openapi/runtime/middleware"
 	"github.com/go-openapi/validate"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/models"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/models"
 )
 
 // NewDnslvLookupParams creates a new DnslvLookupParams object

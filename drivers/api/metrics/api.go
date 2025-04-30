@@ -12,7 +12,7 @@ import (
 	"github.com/prometheus/client_golang/prometheus/promhttp"
 	"golang.org/x/sync/errgroup"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/settings"
+	"github.com/pouyanh/lookhub/settings"
 )
 
 type server struct {

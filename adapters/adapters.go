@@ -3,9 +3,9 @@ package adapters
 import (
 	"github.com/janstoon/toolbox/tricks"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/adapters/db"
-	"gitlab.snapp.ir/pouyanh/lookhub/adapters/env"
-	"gitlab.snapp.ir/pouyanh/lookhub/adapters/socket"
+	"github.com/pouyanh/lookhub/adapters/db"
+	"github.com/pouyanh/lookhub/adapters/env"
+	"github.com/pouyanh/lookhub/adapters/socket"
 )
 
 var Adapters = tricks.Flat(

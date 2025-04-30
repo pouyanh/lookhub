@@ -8,10 +8,10 @@ import (
 	"github.com/janstoon/toolbox/kareless/std"
 	"github.com/janstoon/toolbox/tricks"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/adapters"
-	"gitlab.snapp.ir/pouyanh/lookhub/config"
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers"
-	"gitlab.snapp.ir/pouyanh/lookhub/settings"
+	"github.com/pouyanh/lookhub/adapters"
+	"github.com/pouyanh/lookhub/config"
+	"github.com/pouyanh/lookhub/drivers"
+	"github.com/pouyanh/lookhub/settings"
 )
 
 func main() {

@@ -6,10 +6,10 @@ import (
 	"github.com/janstoon/toolbox/tricks"
 	"golang.org/x/sync/errgroup"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/models"
-	. "gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/restapi/operations/dnslv"
-	"gitlab.snapp.ir/pouyanh/lookhub/lutel"
+	"github.com/pouyanh/lookhub/dnslv"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/models"
+	. "github.com/pouyanh/lookhub/drivers/api/user/restful/restapi/operations/dnslv"
+	"github.com/pouyanh/lookhub/lutel"
 )
 
 func (s server) handleDNSLVLookup(params DnslvLookupParams) middleware.Responder {

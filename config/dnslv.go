@@ -2,4 +2,4 @@
 
 package config
 
-import _ "gitlab.snapp.ir/pouyanh/lookhub/dnslv/registry"
+import _ "github.com/pouyanh/lookhub/dnslv/registry"

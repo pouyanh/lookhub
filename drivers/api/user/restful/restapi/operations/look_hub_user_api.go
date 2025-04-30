@@ -19,8 +19,8 @@ import (
 	"github.com/go-openapi/strfmt"
 	"github.com/go-openapi/swag"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/restapi/operations/dnslv"
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/restapi/operations/maintenance"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/restapi/operations/dnslv"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/restapi/operations/maintenance"
 )
 
 // NewLookHubUserAPI creates a new LookHubUser instance

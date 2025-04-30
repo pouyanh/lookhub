@@ -15,14 +15,14 @@ import (
 	"go.opentelemetry.io/otel"
 	"golang.org/x/sync/errgroup"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/restapi"
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/restapi/operations"
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/restapi/operations/dnslv"
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/restapi/operations/maintenance"
-	"gitlab.snapp.ir/pouyanh/lookhub/settings"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/restapi"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/restapi/operations"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/restapi/operations/dnslv"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/restapi/operations/maintenance"
+	"github.com/pouyanh/lookhub/settings"
 )
 
-const tracerName = "gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user"
+var tracer = otel.Tracer("github.com/pouyanh/lookhub/drivers/api/user")
 
 type server struct {
 	apps      []any
@@ -85,7 +85,7 @@ func (s server) handler(opts ...tricks.Option[operations.LookHubUserAPI]) http.H
 	var gmw handywares.HttpMiddlewareStack
 	restapi.GlobalMiddleware = gmw.
 		Push(handywares.HttpOpenTelemetryMiddleware(
-			otel.Tracer(tracerName), api.Context(),
+			tracer, api.Context(),
 			handywares.OtelHttpSpanNamePrefix(spec.Spec().Info.Title),
 			handywares.OtelHttpOperationIdException(s.noTraceOperationIds(api.Context())...),
 		)).

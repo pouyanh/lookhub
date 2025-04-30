@@ -3,9 +3,9 @@ package registry
 import (
 	"github.com/janstoon/toolbox/kareless"
 
-	"gitlab.snapp.ir/pouyanh/lookhub"
-	"gitlab.snapp.ir/pouyanh/lookhub/dnslv/adapters"
-	"gitlab.snapp.ir/pouyanh/lookhub/dnslv/groper"
+	"github.com/pouyanh/lookhub"
+	"github.com/pouyanh/lookhub/dnslv/adapters"
+	"github.com/pouyanh/lookhub/dnslv/groper"
 )
 
 func init() {

@@ -3,7 +3,7 @@ package env
 import (
 	"github.com/janstoon/toolbox/kareless"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/settings"
+	"github.com/pouyanh/lookhub/settings"
 )
 
 var Environment = []kareless.InstrumentInjector{

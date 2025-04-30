@@ -5,7 +5,7 @@ stages:
   - deploy
 
 variables:
-  GO_IMAGE: "registry.snapp.tech/docker/golang:1.23-alpine"
+  GO_IMAGE: "golang:1.23-alpine"
   GO_PROXY: "https://repo.snapp.tech/repository/goproxy"
   HELM_IMAGE: "alpine/helm:latest"
   HELM_CHART_DIR: ".deployment/${CI_PROJECT_NAME}"

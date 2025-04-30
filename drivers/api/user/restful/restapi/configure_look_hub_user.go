@@ -8,7 +8,7 @@ import (
 
 	"github.com/janstoon/toolbox/tricks"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/restapi/operations"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/restapi/operations"
 )
 
 func ConfigureAPI(api *operations.LookHubUserAPI, oo ...tricks.Option[operations.LookHubUserAPI]) http.Handler {

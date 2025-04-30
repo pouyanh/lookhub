@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/dnslv/adapters"
+	"github.com/pouyanh/lookhub/dnslv/adapters"
 )
 
 func TestDNSClient_QueryAllDNSRecords(t *testing.T) {

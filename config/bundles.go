@@ -6,7 +6,7 @@ import (
 
 	"github.com/janstoon/toolbox/kareless"
 
-	"gitlab.snapp.ir/pouyanh/lookhub"
+	"github.com/pouyanh/lookhub"
 )
 
 // BundlesEssentials returns registered dependencies of allowing bundles

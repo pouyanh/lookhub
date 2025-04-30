@@ -9,7 +9,7 @@ import (
 	"github.com/janstoon/toolbox/tricks"
 	"go.opentelemetry.io/otel/trace"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/models"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/models"
 )
 
 type transformer struct{}

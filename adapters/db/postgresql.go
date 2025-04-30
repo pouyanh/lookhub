@@ -8,7 +8,7 @@ import (
 
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/settings"
+	"github.com/pouyanh/lookhub/settings"
 )
 
 func newPgxConnectionPool(dbSs settings.Database, _ settings.Mode) (*pgxpool.Pool, error) {

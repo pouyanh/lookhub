@@ -9,7 +9,7 @@ import (
 	"github.com/janstoon/toolbox/kareless"
 	"github.com/janstoon/toolbox/tricks"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/settings"
+	"github.com/pouyanh/lookhub/settings"
 )
 
 var Socket = []kareless.InstrumentInjector{

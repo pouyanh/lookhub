@@ -1,4 +1,4 @@
-module gitlab.snapp.ir/pouyanh/lookhub
+module github.com/pouyanh/lookhub
 
 go 1.23.3
 

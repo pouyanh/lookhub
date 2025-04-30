@@ -10,7 +10,7 @@ import (
 
 	"github.com/go-openapi/runtime"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/drivers/api/user/restful/models"
+	"github.com/pouyanh/lookhub/drivers/api/user/restful/models"
 )
 
 // HealthCheckOKCode is the HTTP code returned for type HealthCheckOK

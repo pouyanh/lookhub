@@ -8,8 +8,8 @@ import (
 	"github.com/janstoon/toolbox/bricks"
 	"github.com/janstoon/toolbox/tricks"
 
-	"gitlab.snapp.ir/pouyanh/lookhub/dnslv"
-	"gitlab.snapp.ir/pouyanh/lookhub/dnslv/adapters/db"
+	"github.com/pouyanh/lookhub/dnslv"
+	"github.com/pouyanh/lookhub/dnslv/adapters/db"
 )
 
 type domainRepo struct {
