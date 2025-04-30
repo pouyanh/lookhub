@@ -115,7 +115,7 @@ variable "grafana_operator_namespace" {
 variable "private_docker_registry_server" {
 	description = "Private docker registry hostname"
 	type        = string
-	default     = "registry.snapp.tech"
+	default     = "ghcr.io"
 }
 
 variable "private_docker_registry_username" {

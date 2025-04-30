@@ -35,9 +35,9 @@ copy terraform.tfvars.sample.json terraform.tfvars.json
 And fill in private docker registry credentials
 ```json
 {
-	"private_docker_registry_server": "registry.snapp.tech",
-	"private_docker_registry_username": "your-gitlab-username",
-	"private_docker_registry_password": "your-gitlab-access-token-with-read-registry-scope"
+	"private_docker_registry_server": "ghcr.io",
+	"private_docker_registry_username": "your-registry-username",
+	"private_docker_registry_password": "your-registry-access-token-with-read-registry-scope"
 }
 ```
 Finally, bring the local cluster up:

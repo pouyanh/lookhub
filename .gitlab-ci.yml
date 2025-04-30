@@ -6,13 +6,13 @@ stages:
 
 variables:
   GO_IMAGE: "golang:1.23-alpine"
-  GO_PROXY: "https://repo.snapp.tech/repository/goproxy"
+  GO_PROXY: "https://proxy.golang.org"
   HELM_IMAGE: "alpine/helm:latest"
   HELM_CHART_DIR: ".deployment/${CI_PROJECT_NAME}"
   ARGO_IMAGE: "argoproj/argocd:v2.6.15"
 
   IMG_REGISTRY:
-    description: "Docker image registry to push the image into such as `image-registry.apps.private.okd4.teh-1.snappcloud.io`. Default = GitLab's container registry"
+    description: "Docker image registry to push the image into such as `ghcr.io`. Default = GitLab's container registry"
     value: "${CI_REGISTRY}"
   IMG_REPOSITORY:
     description: "Docker image name. Default = project-namespace/project-name"
@@ -29,8 +29,8 @@ variables:
   IMG: "${IMG_REGISTRY}/${IMG_REPOSITORY}:${IMG_TAG}"
 
   ARGO_ENDPOINT:
-    description: "ArgoCD server hostname. Default = argocd.okd4.teh-1.snappcloud.io"
-    value: "argocd.okd4.teh-1.snappcloud.io"
+    description: "ArgoCD server hostname. Default = argocd.pouyan.dev"
+    value: "argocd.pouyan.dev"
   ARGO_TOKEN:
     description: "ArgoCD auth token. Default = ARGO_TOKEN_TEH1 secret"
     value: "${ARGO_TOKEN_TEH1}"
@@ -39,8 +39,8 @@ variables:
     description: "Kubernetes namespace or OpenShift project to deploy onto. Default = project-namespace"
     value: "${CI_PROJECT_NAMESPACE}"
   KUBE_ENDPOINT:
-    description: "Kubernetes cluster api url. Default = https://api.okd4.teh-1.snappcloud.io:6443"
-    value: "https://api.okd4.teh-1.snappcloud.io:6443"
+    description: "Kubernetes cluster api url. Default = https://rancher.pouyan.dev/v3"
+    value: "https://rancher.pouyan.dev/v3"
   KUBE_TOKEN:
     description: "Kubernetes cluster api token. Default = KUBE_TOKEN_TEH1 secret"
     value: "${KUBE_TOKEN_TEH1}"
